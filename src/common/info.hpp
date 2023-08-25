@@ -2,6 +2,7 @@
 #define INFO_HPP
 #include <absl/time/time.h>
 #include <array>
+#include <memory>
 
 struct DepthInfo{
     absl::Duration dur;
@@ -38,4 +39,6 @@ struct OrderInfo{
     double TradVolume;
 }__attribute__ ((aligned(8)));
 
+template<typename T>
+using PackedInfoSp = std::shared_ptr<std::vector<std::shared_ptr<T>>>;
 #endif //INFO_HPP

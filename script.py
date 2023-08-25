@@ -41,7 +41,7 @@ def process_data(path):
             sh_value.append(hfq_multi_daily[id].values[0])
             sh.append(id)
     dic = {"sz":sz, "sh":sh, "sz_closeprice":sz_value, "sh_closeprice":sh_value}
-    with open("output.json", "w") as file:
+    with open("config/traced_contract.json", "w") as file:
         json.dump(dic, file)
 
 if __name__ == "__main__":

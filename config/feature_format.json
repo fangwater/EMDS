@@ -1,0 +1,8 @@
+{
+  "test1":["aa","bb","cc"],
+  "test2":["dd","ee"],
+  "candle_stick":["cjb", "bcjb", "scjb",
+    "volume_nfq","bvolume_nfq","svolume_nfq",
+    "amount","bamount","samount","lowprice_nfq",
+    "highprice_nfq","openprice_nfq","closeprice_nfq"]
+}

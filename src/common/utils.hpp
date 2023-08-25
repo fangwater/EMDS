@@ -83,21 +83,6 @@ std::vector<T> vecMerge(const std::vector<T>& vec1, const std::vector<T>& vec2) 
     return result;
 }
 
-
-template <typename T>
-void copySharedPtrVector(std::shared_ptr<std::vector<std::shared_ptr<T>>> src,
-                         std::shared_ptr<std::vector<std::shared_ptr<T>>> dst)
-{
-    if (!src || !dst) {
-        throw std::invalid_argument("src and dst cannot be nullptr");
-    }
-
-    dst->reserve(dst->size() + src->size());  // 预先分配足够的空间
-    std::copy(src->begin(), src->end(), std::back_inserter(*dst));
-}
-
-
-
 template<std::size_t N>
 std::vector<std::array<char, N>> vecConvertStrToArray(const std::vector<std::string>& input) {
     std::vector<std::array<char, N>> output;

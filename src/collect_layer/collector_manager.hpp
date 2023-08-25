@@ -8,7 +8,7 @@
 #include "../common/time_utils.hpp"
 #include "../common/fmt_expand.hpp"
 #include "../common/utils.hpp"
-#include "../common/system_config.hpp"
+#include "../common/config_type.hpp"
 #include "collector.hpp"
 
 class TradeCollectorManager{
