@@ -1,3 +1,0 @@
-/home/fanghz/project/EMDS_config_maker/build/CMakeFiles/config_maker.dir
-/home/fanghz/project/EMDS_config_maker/build/CMakeFiles/edit_cache.dir
-/home/fanghz/project/EMDS_config_maker/build/CMakeFiles/rebuild_cache.dir
