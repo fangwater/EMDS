@@ -1,0 +1,703 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "config_maker"
+		}
+	],
+	"backtrace" : 2,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"_add_executable",
+			"add_executable",
+			"target_link_libraries",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"/home/fanghz/lib/vcpkg/scripts/buildsystems/vcpkg.cmake",
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 43,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 592,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 56,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 57,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 58,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 59,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 60,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 63,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 62,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 42,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 9,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g"
+				},
+				{
+					"fragment" : "-std=gnu++20"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 7,
+					"define" : "GFLAGS_IS_A_DLL=0"
+				},
+				{
+					"backtrace" : 8,
+					"define" : "JSON_DIAGNOSTICS=0"
+				},
+				{
+					"backtrace" : 8,
+					"define" : "JSON_USE_IMPLICIT_CONVERSIONS=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "UTF8PROC_STATIC"
+				},
+				{
+					"backtrace" : 9,
+					"define" : "ZMQ_STATIC"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 10,
+					"path" : "/home/fanghz/project/EMDS_config_maker/src/include"
+				},
+				{
+					"backtrace" : 11,
+					"isSystem" : true,
+					"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/include"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					3,
+					4,
+					5,
+					7,
+					7,
+					7,
+					7,
+					7,
+					7,
+					7,
+					7,
+					7,
+					7,
+					7
+				],
+				"standard" : "20"
+			},
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"id" : "config_maker::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_base.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_strings.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_synchronization.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_time.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_strings.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_log_initialize.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_base.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags_parse.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libfmtd.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libarrow.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 6,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libparquet.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libfolly.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libfollybenchmark.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libfolly_test_util.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_leak_check.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_log_internal_conditions.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_log_internal_message.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_examine_stack.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_log_internal_format.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_log_internal_proto.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_log_internal_nullguard.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_log_internal_log_sink_set.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_log_sink.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_log_entry.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_strerror.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_log_globals.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_log_internal_globals.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags_usage.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags_usage_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags_marshalling.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_str_format_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags_reflection.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_cord.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_cordz_info.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_cord_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_cordz_functions.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_cordz_handle.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_crc_cord_state.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_crc32c.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_crc_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_crc_cpu_detect.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_hash.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_city.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_bad_variant_access.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_low_level_hash.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_raw_hash_set.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_hashtablez_sampler.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_exponential_biased.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags_config.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags_private_handle_accessor.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags_commandlineflag.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_bad_optional_access.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags_commandlineflag_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_flags_program_name.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_synchronization.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_stacktrace.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_graphcycles_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_time.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_civil_time.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_time_zone.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_symbolize.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_malloc_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_debugging_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_demangle_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_strings.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_int128.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_strings_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_base.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_spinlock_wait.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_throw_delegate.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_raw_logging_internal.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libabsl_log_severity.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libarrow.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libbrotlienc-static.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libbrotlidec-static.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libbrotlicommon-static.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lm",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libbz2d.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/liblz4d.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libsnappy.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libz.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libzstd.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libutf8proc.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libre2.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lrt",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libthriftd.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libssl.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libcrypto.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lpthread",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libfolly.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libfmtd.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libboost_context.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libboost_filesystem.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libboost_program_options.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libboost_regex.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libboost_system.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libboost_thread.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libboost_chrono.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libboost_atomic.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libdouble-conversion.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libglog.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libgflags_debug.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libevent_extrad.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libevent_pthreadsd.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libevent_cored.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libz.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libssl.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libcrypto.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-ldl",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libunwind.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/fanghz/lib/vcpkg/installed/x64-linux/debug/lib/libzmq.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lrt",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "config_maker",
+	"nameOnDisk" : "config_maker",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "src/config_maker.cc",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}

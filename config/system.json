@@ -1,0 +1,7 @@
+{
+    "system":{
+        "hfq_multi_parquet_path":"/home/fanghz/project/pub_sub/hfq_multi.parquet",
+        "date":"2023-04-06",
+        "collect_latency(ms)":500
+    }
+}

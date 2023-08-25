@@ -1,0 +1,1232 @@
+{
+	"inputs" : 
+	[
+		{
+			"path" : "CMakeLists.txt"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/CMakeFiles/3.25.2/CMakeSystem.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/scripts/buildsystems/vcpkg.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeDependentOption.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeSystemSpecificInitialize.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/CMakeFiles/3.25.2/CMakeCCompiler.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/CMakeFiles/3.25.2/CMakeCXXCompiler.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeSystemSpecificInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeGenericSystem.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeInitializeConfigs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/Platform/Linux.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/Platform/UnixPaths.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeCInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeLanguageInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/Compiler/GNU-C.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/Platform/Linux-GNU-C.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/Platform/Linux-GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeCXXInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeLanguageInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/Compiler/GNU-CXX.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/Platform/Linux-GNU-CXX.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/Platform/Linux-GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindThreads.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckLibraryExists.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckIncludeFile.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckCSourceCompiles.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/Internal/CheckSourceCompiles.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/absl/abslConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/absl/abslConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindThreads.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckLibraryExists.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckIncludeFile.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckCSourceCompiles.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/absl/abslTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/absl/abslTargets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/absl/abslTargets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/ArrowConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/ArrowConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/ArrowOptions.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindThreads.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckLibraryExists.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckIncludeFile.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckCSourceCompiles.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/FindSnappyAlt.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/snappy/SnappyConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/snappy/SnappyConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/snappy/SnappyTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/snappy/SnappyTargets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/snappy/SnappyTargets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/FindBrotliAlt.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/unofficial-brotli/unofficial-brotli-config.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/unofficial-brotli/unofficial-brotli-targets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/unofficial-brotli/unofficial-brotli-targets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/unofficial-brotli/unofficial-brotli-targets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/FindOpenSSLAlt.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindOpenSSL.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPkgConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindThreads.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckLibraryExists.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckIncludeFile.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckCSourceCompiles.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/FindThriftAlt.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/thrift/ThriftConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/thrift/ThriftConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/thrift/thriftTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/thrift/thriftTargets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/thrift/thriftTargets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/thrift/thriftzTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/thrift/thriftzTargets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/thrift/thriftzTargets-release.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zlib/vcpkg-cmake-wrapper.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindZLIB.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/SelectLibraryConfigurations.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindOpenSSL.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPkgConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindThreads.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckLibraryExists.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckIncludeFile.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckCSourceCompiles.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/libevent/LibeventConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/libevent/LibeventConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/libevent/LibeventTargets-static.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/libevent/LibeventTargets-static-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/libevent/LibeventTargets-static-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/xsimd/xsimdConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/xsimd/xsimdConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/xsimd/xsimdTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zlib/vcpkg-cmake-wrapper.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindZLIB.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/Findlz4Alt.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/lz4/lz4-config.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/lz4/lz4-config-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/lz4/lz4-config-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/FindzstdAlt.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zstd/zstdConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zstd/zstdConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zstd/zstdTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zstd/zstdTargets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zstd/zstdTargets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/Findre2Alt.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/re2/re2ConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/re2/re2Config.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindThreads.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckLibraryExists.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckIncludeFile.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckCSourceCompiles.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/re2/re2Targets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/re2/re2Targets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/re2/re2Targets-release.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindBZip2.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/SelectLibraryConfigurations.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckSymbolExists.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakePushCheckState.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/Findutf8proc.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/unofficial-utf8proc/unofficial-utf8proc-config.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/unofficial-utf8proc/unofficial-utf8proc-config-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/unofficial-utf8proc/unofficial-utf8proc-config-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/ArrowTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/ArrowTargets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/ArrowTargets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/parquet/ParquetConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/parquet/ParquetConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/ArrowConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/ArrowConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/ArrowOptions.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindThreads.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckLibraryExists.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckIncludeFile.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckCSourceCompiles.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/FindSnappyAlt.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/FindBrotliAlt.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/FindOpenSSLAlt.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/FindThriftAlt.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/xsimd/xsimdConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/xsimd/xsimdConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zlib/vcpkg-cmake-wrapper.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindZLIB.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/Findlz4Alt.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/FindzstdAlt.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/Findre2Alt.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindBZip2.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckSymbolExists.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakePushCheckState.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/Findutf8proc.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/arrow/ArrowTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/parquet/ParquetTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/parquet/ParquetTargets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/parquet/ParquetTargets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/fmt/fmt-config-version.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/fmt/fmt-config.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/fmt/fmt-targets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/fmt/fmt-targets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/fmt/fmt-targets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/cppzmq/cppzmqConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/cppzmq/cppzmqConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zeromq/vcpkg-cmake-wrapper.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zeromq/ZeroMQConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zeromq/ZeroMQConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zeromq/ZeroMQTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zeromq/ZeroMQTargets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zeromq/ZeroMQTargets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/cppzmq/cppzmqTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/folly/vcpkg-cmake-wrapper.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/folly/folly-config.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/folly/folly-targets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/folly/folly-targets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/folly/folly-targets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/double-conversion/double-conversionConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/double-conversion/double-conversionConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/double-conversion/double-conversionTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/double-conversion/double-conversionTargets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/double-conversion/double-conversionTargets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/glog/glog-config-version.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/glog/glog-config.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/gflags/vcpkg-cmake-wrapper.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/gflags/gflags-config-version.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/gflags/gflags-config.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/gflags/gflags-targets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/gflags/gflags-targets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/gflags/gflags-targets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/glog/glog-targets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/glog/glog-targets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/glog/glog-targets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/gflags/vcpkg-cmake-wrapper.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/gflags/gflags-config-version.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/gflags/gflags-config.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/gflags/gflags-targets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/libevent/LibeventConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/libevent/LibeventConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/libevent/LibeventTargets-static.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/zlib/vcpkg-cmake-wrapper.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindZLIB.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindOpenSSL.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPkgConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindThreads.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckLibraryExists.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckIncludeFile.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckCSourceCompiles.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/fmt/fmt-config-version.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/fmt/fmt-config.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/boost/vcpkg-cmake-wrapper.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindBoost.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindThreads.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckLibraryExists.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckIncludeFile.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/CheckCSourceCompiles.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/xsimd/xsimdConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/fanghz/lib/vcpkg/installed/x64-linux/share/xsimd/xsimdConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/lib/cmake/nlohmann_json/nlohmann_jsonConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/lib/cmake/nlohmann_json/nlohmann_jsonConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/home/fanghz/.cache/JetBrains/RemoteDev/dist/1466a3f304df6_CLion-231.8109.141/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/lib/cmake/nlohmann_json/nlohmann_jsonTargets.cmake"
+		}
+	],
+	"kind" : "cmakeFiles",
+	"paths" : 
+	{
+		"build" : "/home/fanghz/project/EMDS/cmake-build-debug",
+		"source" : "/home/fanghz/project/EMDS"
+	},
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 0
+	}
+}
