@@ -2,7 +2,7 @@
 #define INFO_CACHE_MANAGER_HPP
 
 #include <zmq.hpp>
-#include "common/fmt_expand.hpp"
+#include "../common/fmt_expand.hpp"
 #include "trade_info_cache.hpp"
 #include "parser/trade_parser.hpp"
 

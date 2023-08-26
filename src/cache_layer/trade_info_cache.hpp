@@ -2,6 +2,7 @@
 #define TRADE_INFO_CACHE_MANAGER_HPP
 
 #include "info_cache.hpp"
+#include "parser/trade_parser.hpp"
 class TradeInfoCache : public InfoCache<TradeInfo>{
 public:
     std::shared_ptr<Parser<TradeInfo>> parser;

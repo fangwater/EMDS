@@ -11,10 +11,39 @@
 #include "../common/utils.hpp"
 #include "../common/config_type.hpp"
 #include "collector.hpp"
+#include "collector_manager.hpp"
 
 
+class TradeCollectorManager : public CollectorManager<TradeInfo>{
+public:
+public:
+    TradeCollectorManager(std::shared_ptr<AggregatorManager> aggregator_sp):
+    CollectorManager<TradeInfo>(aggregator_sp){
+        LOG(INFO) << fmt::format("Creating TradeCollectorManager");
+    }
+};
 
+template<typename T,EXCHANGE EX>
+class PeriodSignalGenerator{
+public:
 
+private:
+    std::shared_ptr<ContractBufferMapCollector<T,EX>> collector_sp;
+    void sh_trade(){
+        zmq::context_t context(1);
+        zmq::socket_t subscriber(context, zmq::socket_type::sub);
+        subscriber.set(zmq::sockopt::rcvbuf, 1024 * 1024);
+        subscriber.set(zmq::sockopt::sndhwm, 0);
+        subscriber.set(zmq::sockopt::subscribe,"");
+        subscriber.connect(bind_to);
+    }
+public:
+
+    void minimal_period_signal_generator(){
+
+    }
+}
+void sh_minimal_period_signal_generator()
 // void SH_trade_period_signal_generator(absl::CivilDay today, std::stop_token stoken, std::string bind_to, std::shared_ptr<ContractBufferMapCollector<TradeInfo>> collector_sp){
 //     zmq::context_t context(1);
 //     zmq::socket_t subscriber(context, zmq::socket_type::sub);

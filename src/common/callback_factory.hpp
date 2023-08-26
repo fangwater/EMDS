@@ -9,23 +9,26 @@ class CallBackObjFactory{
 private:
     CallBackObjPtr<TradeInfo> create_candle_stick_callback(std::vector<double>& closeprices);
 public:
-    CallBackObjPtr<TradeInfo> create_trade_function_callback(std::string name, std::string sh_or_sz);
+    template<EXCHANGE EX>
+    CallBackObjPtr<TradeInfo> create_trade_function_callback(std::string name);
 };
 
-CallBackObjPtr<TradeInfo> CallBackObjFactory::create_trade_function_callback(std::string name, std::string sh_or_sz) {
-    if(name == "candle_stick"){
+template<EXCHANGE EX>
+CallBackObjPtr<TradeInfo> CallBackObjFactory::create_trade_function_callback(std::string name) {
+    if(name == "candle_stick") {
         ClosePrice config_of_closeprice;
         config_of_closeprice.init();
-        if(sh_or_sz == "sh"){
-            std::vector<double> closeprices = config_of_closeprice.sh;
-            return create_candle_stick_callback(closeprices);
-        }else if(sh_or_sz == "sz"){
-            std::vector<double> closeprices = config_of_closeprice.sz;
-            return create_candle_stick_callback(closeprices);
-        }else{
+        std::vector<double> closeprices;
+        if constexpr (EX == EXCHANGE::SH) {
+            closeprices = config_of_closeprice.sh;
+        } else if constexpr (EX == EXCHANGE::SZ) {
+            closeprices = config_of_closeprice.sz;
+        } else {
             throw std::runtime_error("sh_or_sz format error");
         }
+        return create_candle_stick_callback(closeprices);
     }
+    throw std::runtime_error("Invalid callback name");
 }
 
 CallBackObjPtr<TradeInfo> CallBackObjFactory::create_candle_stick_callback(std::vector<double> &closeprices) {

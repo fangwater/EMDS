@@ -41,4 +41,9 @@ struct OrderInfo{
 
 template<typename T>
 using PackedInfoSp = std::shared_ptr<std::vector<std::shared_ptr<T>>>;
+
+enum class EXCHANGE{
+    SZ,
+    SH
+};
 #endif //INFO_HPP

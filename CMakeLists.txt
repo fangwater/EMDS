@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.22)
-set(CMAKE_C_COMPILER "/usr/bin/gcc")
-set(CMAKE_CXX_COMPILER "/usr/bin/g++")
-SET(CMAKE_TOOLCHAIN_FILE "/home/fanghz/lib/vcpkg/scripts/buildsystems/vcpkg.cmake")
-project(replay)
+set(CMAKE_C_COMPILER "/usr/local/bin/gcc")
+set(CMAKE_CXX_COMPILER "/usr/local/bin/g++")
+SET(CMAKE_TOOLCHAIN_FILE "/home/fanghaizhou/lib/vcpkg/scripts/buildsystems/vcpkg.cmake")
+project(EMDS)
 set(CMAKE_CXX_STANDARD 20)
 SET(CMAKE_BUILD_TYPE "Debug")
 # SET(CMAKE_BUILD_TYPE "Release")
-include_directories(SYSTEM "/home/fanghz/lib/vcpkg/installed/x64-linux/include")
+include_directories(SYSTEM "/home/fanghaizhou/lib/vcpkg/installed/x64-linux/include")
 find_package(Threads REQUIRED)
 find_package(absl CONFIG REQUIRED)
 find_package(Arrow CONFIG REQUIRED)
@@ -38,6 +38,12 @@ absl::config
 absl::base
 absl::flags_parse
 absl::utility)
+
+find_package(OpenMP)
+if(OPENMP_FOUND)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/src/cache_layer)
 include_directories(${CMAKE_SOURCE_DIR}/src/collect_layer)

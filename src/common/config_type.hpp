@@ -7,6 +7,9 @@ class SystemParam{
 public:
     int collect_latency_ms;
     absl::CivilDay today;
+    int active_threads;
+    int64_t contract_buffer_size;
+    int64_t cache_size;
     void init(){
         json config = open_json_file("config/system.json");
         //获取当天的日期，后续操作依赖于这个函数
@@ -21,6 +24,9 @@ public:
             return today;
         }();
         collect_latency_ms = config["system"]["collect_latency(ms)"];
+        active_threads = config["system"]["active_threads"];
+        contract_buffer_size = config["system"]["contract_buffer_size"];
+        cache_size = config["system"]["cache_size"];
     }
 };
 

@@ -3,6 +3,8 @@
         "hfq_multi_parquet_path":"/home/fanghz/project/pub_sub/hfq_multi.parquet",
         "date":"2023-04-06",
         "collect_latency(ms)":500,
-        "active_threads":128
+        "active_threads":128,
+        "contract_buffer_size": 16384,
+        "cache_size": 8192
     }
 }

@@ -6,12 +6,16 @@
 #include <memory>
 #include <vector>
 #include <absl/log/log.h>
+#include "../common/info.hpp"
+#include "../common/utils.hpp"
+#include "../common/config_type.hpp"
 
 template<typename T>
 class ContractBuffer{
 public:
     mutable std::mutex mtx;
     std::unique_ptr<folly::ProducerConsumerQueue<std::shared_ptr<T>>> buffer_ptr;
+    ContractBuffer() = delete;
     explicit ContractBuffer(std::size_t queue_size){
         buffer_ptr = std::make_unique< folly::ProducerConsumerQueue<std::shared_ptr<T>> >( queue_size );
     }
@@ -48,15 +52,32 @@ public:
     }
 };
 
-template<typename T>
+template<typename T, EXCHANGE EX>
 class ContractBufferMap{
 public:
     absl::flat_hash_map<std::array<char,11>, ContractBuffer<T>> securiy_id_to_contract_buffer_map;
 public:
-    ContractBufferMap(std::vector<std::array<char,11>>& security_ids, std::size_t buffer_size){
+    ContractBufferMap(){};
+    int init(){
+        std::vector<std::array<char,11>> security_ids = [](){
+            SecurityId security_id_config;
+            security_id_config.init();
+            if constexpr (EX == EXCHANGE::SH){
+                return security_id_config.sh;
+            }else if constexpr (EX == EXCHANGE::SZ){
+                return security_id_config.sz;
+            }else{
+                throw std::runtime_error("Invalid exchange type");
+            }
+        }();
+        std::size_t contract_buffer_size = [](){
+            SystemParam system_param;
+            system_param.init();
+            return system_param.contract_buffer_size;
+        }();
         securiy_id_to_contract_buffer_map.reserve(security_ids.size());
         for(auto& security_id : security_ids){
-            securiy_id_to_contract_buffer_map.insert( {security_id, ContractBuffer<T>(buffer_size)} );
+            securiy_id_to_contract_buffer_map.insert( {security_id, ContractBuffer<T>(contract_buffer_size)} );
         }
     }
     bool insert(std::shared_ptr<T> info){
