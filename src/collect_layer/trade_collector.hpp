@@ -16,10 +16,11 @@
 
 class TradeCollectorManager : public CollectorManager<TradeInfo>{
 public:
+
 public:
-    TradeCollectorManager(std::shared_ptr<AggregatorManager> aggregator_sp):
+    explicit TradeCollectorManager(std::shared_ptr<AggregatorManager> aggregator_sp):
     CollectorManager<TradeInfo>(aggregator_sp){
-        LOG(INFO) << fmt::format("Creating TradeCollectorManager");
+        LOG(INFO) << fmt::format("Creating Trade Collector Manager");
     }
 };
 

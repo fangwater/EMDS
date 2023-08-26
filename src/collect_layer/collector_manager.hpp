@@ -32,7 +32,7 @@ public:
     //aggregator_manager
     std::shared_ptr<AggregatorManager> aggregator_manager;
 public:
-    CollectorManager(std::shared_ptr<AggregatorManager> aggregator_sp){
+    explicit CollectorManager(std::shared_ptr<AggregatorManager> aggregator_sp){
         if(aggregator_sp){
             aggregator_manager = aggregator_sp;
         }else{

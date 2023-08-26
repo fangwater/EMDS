@@ -43,7 +43,7 @@ public:
     std::string ctx_type_string;
     std::vector<int> unique_periods;
     std::vector<std::vector<std::string>> per_period_feature_name_list;
-    PeriodCtxConfig(CtxType type):type_(type){
+    explicit PeriodCtxConfig(CtxType type):type_(type){
         if(type == CtxType::TRADE){
             ctx_type_string = "trade";
         }else if(type == CtxType::ORDER){
@@ -114,6 +114,28 @@ public:
             return vecConvertStrToArray<11>(sz_securitys_str);
         }();
         all = vecMerge(sz,sh);
+    }
+};
+
+class ZmqConfig{
+public:
+    std::string ip;
+    int64_t port;
+    std::string channel;
+};
+
+class SubscribeConfig{
+public:
+    ZmqConfig sz_trade;
+    ZmqConfig sh_trade;
+    ZmqConfig sz_order;
+    ZmqConfig sh_order;
+    ZmqConfig sz_depth;
+    ZmqConfig sh_depth;
+public:
+    void init(){
+        json subscribe_config = open_json_file("config/subscribe.json");
+        
     }
 };
 
