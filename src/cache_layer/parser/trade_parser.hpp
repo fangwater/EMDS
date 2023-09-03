@@ -1,9 +1,9 @@
 #ifndef TRADE_PARSER_HPP
 #define TRADE_PARSER_HPP
 #include "parser.hpp"
-class SZTradeInfoParser : public Parser<TradeInfo>{
+class SZTradeInfoParser : public Parser<TradeInfo,EXCHANGE::SZ>{
 public:
-    explicit SZTradeInfoParser( std::shared_ptr<InfoCache<TradeInfo>> ptr ): Parser<TradeInfo>(ptr){};
+    explicit SZTradeInfoParser(const std::shared_ptr<InfoCache<TradeInfo,EXCHANGE::SZ>>& ptr ): Parser<TradeInfo,EXCHANGE::SZ>(ptr){};
 public:
     void MessageProcess(std::string_view line) override{
         std::vector<std::string_view> x = absl::StrSplit(line, ",");
@@ -22,16 +22,16 @@ public:
             CHECK_RETURN_VALUE(absl::SimpleAtoi(x[3],&BidApplSeqNum),"Failed to convert BidApplSeqNum");
             CHECK_RETURN_VALUE(absl::SimpleAtoi(x[4],&OfferApplSeqNum),"Failed to convert OfferApplSeqNum");
             ticker_info_sp->B_or_S = (BidApplSeqNum > OfferApplSeqNum) ? 1 : -1;
-            InfoCache_ptr->PutInfo(ticker_info_sp);
+            InfoCache_ptr->put_info(ticker_info_sp);
         }
     }
 };
 //上交所逐笔成交
-class SHTradeInfoParser: public Parser<TradeInfo>{
+class SHTradeInfoParser: public Parser<TradeInfo,EXCHANGE::SH>{
 public:
-    explicit SHTradeInfoParser( std::shared_ptr<InfoCache<TradeInfo>> ptr ): Parser<TradeInfo>(ptr){};
+    explicit SHTradeInfoParser(const std::shared_ptr<InfoCache<TradeInfo,EXCHANGE::SH>>& ptr ): Parser<TradeInfo,EXCHANGE::SH>(ptr){};
 public:
-    void MessageProcess(std::string_view line){
+    void MessageProcess(std::string_view line) override {
         std::vector<std::string_view> x = absl::StrSplit(line,",");
         if(x[10] != "N"){
             std::shared_ptr<TradeInfo> TickInfo_sp = std::make_shared<TradeInfo>();
@@ -42,7 +42,7 @@ public:
             absl::Duration bias = convert_time_string_to_duration(x[4]);
             TickInfo_sp->TradTime = InfoCache_ptr->today_start + bias;
             TickInfo_sp->B_or_S = (x[10] == "B") ? 1 : -1;
-            InfoCache_ptr->PutInfo(TickInfo_sp);
+            InfoCache_ptr->put_info(TickInfo_sp);
         }
     }
 };

@@ -9,6 +9,7 @@
 #include "../common/info.hpp"
 #include "../common/utils.hpp"
 #include "../common/config_type.hpp"
+#include "../logger/async_logger.hpp"
 
 template<typename T>
 class ContractBuffer{
@@ -28,7 +29,7 @@ public:
     bool append_info(std::shared_ptr<T> info_sp){
         std::lock_guard<std::mutex> lock(mtx);
         if( !buffer_ptr->write(info_sp) ){
-            LOG(FATAL) << "Queue is out of size";
+            throw std::runtime_error("Queue is out of size");
         }
         return true;
     };
@@ -57,7 +58,7 @@ class ContractBufferMap{
 public:
     absl::flat_hash_map<std::array<char,11>, ContractBuffer<T>> securiy_id_to_contract_buffer_map;
 public:
-    ContractBufferMap(){};
+    ContractBufferMap() = default;
     int init(){
         std::vector<std::array<char,11>> security_ids = [](){
             SecurityId security_id_config;
@@ -83,9 +84,7 @@ public:
     bool insert(std::shared_ptr<T> info){
         auto iter = securiy_id_to_contract_buffer_map.find(info->SecurityID);
         if(iter == securiy_id_to_contract_buffer_map.end()){
-            LOG(INFO) << std::string(info->SecurityID.begin(), info->SecurityID.end());
-            LOG(WARNING) << "this security_id is not included in the securiy_id_to_contract_buffer_map";
-            return false;
+            throw std::runtime_error("security_id is not included in the securiy_id_to_contract_buffer_map");
         }else{
             iter->second.append_info(info);
             return true;

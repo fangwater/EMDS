@@ -16,6 +16,7 @@
 #include "../common/callback_factory.hpp"
 #include "../aggregate_layer/period_result.hpp"
 #include "../aggregate_layer/aggregator_manager.hpp"
+#include "../logger/async_logger.hpp"
 
 template<typename T>
 class PeriodContext{
@@ -24,6 +25,7 @@ public:
     PackedInfoSp<T> accumulated_info;
     std::vector<CallBackObjPtr<T>> callbacks;
     std::vector<std::string> callback_names;
+    PeriodContext():period(-1){};
     std::size_t append_infos(PackedInfoSp<T> src){
         accumulated_info->reserve(accumulated_info->size() + src->size());
         std::copy(src->begin(), src->end(), std::back_inserter(*accumulated_info));
@@ -35,15 +37,19 @@ template<typename T, EXCHANGE EX>
 class ContractPeriodComputer{
 private:
     std::vector<std::array<char,11>> security_ids;
+    LoggerPtr logger;
 public:
-    ContractPeriodComputer();
+    ContractPeriodComputer() = default;
+    void register_logger(const std::shared_ptr<LoggerManager>& logger_manager){
+        logger = logger_manager->get_logger(fmt::format("ContractPeriodComputer[{}]",str_type_ex<T,EX>()));
+    }
     std::vector<PeriodContext<T>> per_period_ctx;
     std::shared_ptr<AggregatorManager> aggregator;
     //TODO: 需要重新考虑盘中重启的情况
-    void process_minimum_period_info(PackedInfoSp<T> info_sp, int32_t i, int64_t rec_count);
+    void process_minimum_period_info(PackedInfoSp<T> minimum_period_info, int32_t i, int64_t rec_count);
     void init_per_period_ctx();
     void init();
-    void bind_aggregator_manager(std::shared_ptr<AggregatorManager> manager_sp);
+    void bind_aggregator_manager(const std::shared_ptr<AggregatorManager>& manager_sp);
 };
 
 template<typename T, EXCHANGE EX>
@@ -60,13 +66,12 @@ void ContractPeriodComputer<T, EX>::init(){
 }
 
 template<typename T, EXCHANGE EX>
-void ContractPeriodComputer<T,EX>::bind_aggregator_manager(std::shared_ptr<AggregatorManager> manager_sp) {
+void ContractPeriodComputer<T,EX>::bind_aggregator_manager(const std::shared_ptr<AggregatorManager>& manager_sp) {
     if(manager_sp){
         aggregator = manager_sp;
     }else{
         throw std::runtime_error("bind uninitialized aggregator manager to contract_period_computer");
     }
-    return;
 }
 
 template<typename T, EXCHANGE EX>
@@ -146,7 +151,8 @@ public:
     int run_collect(absl::Time t);
 };
 template<typename T, EXCHANGE EX>
-ContractBufferMapCollector<T,EX>::ContractBufferMapCollector():rec_count(0){}
+ContractBufferMapCollector<T,EX>::ContractBufferMapCollector():
+    rec_count(0),latency(0),active_threads(0){}
 
 template<typename T, EXCHANGE EX>
 int ContractBufferMapCollector<T,EX>::bind_contract_buffer_map(std::shared_ptr<ContractBufferMap<T,EX>> _contract_buffer_map){
@@ -220,6 +226,7 @@ PackedInfoSp<T> ContractBufferMapCollector<T,EX>::collect_info_by_id(std::array<
 template<typename T, EXCHANGE EX>
 int ContractBufferMapCollector<T,EX>::signal_handler(absl::Time tp) {
     std::lock_guard<std::mutex> sig_mtx(mtx);
+    //TODO：等待时间
     std::this_thread::sleep_for(std::chrono::milliseconds(latency));
     //TODO：修改为能兼容对齐取整模式
     absl::CivilMinute truncated_civil = absl::ToCivilMinute(tp,sh_tz.tz);
@@ -231,13 +238,11 @@ template<typename T, EXCHANGE EX>
 int ContractBufferMapCollector<T,EX>::run_collect(absl::Time threshold_tp) {
     threshold_tp += absl::Milliseconds(latency);
     rec_count++;
-
     omp_set_num_threads(active_threads);
-    #pragma omp parallel for
+    #pragma omp parallel for default(none) shared(security_ids, contract_period_computer, threshold_tp, rec_count)
     for(int i = 0; i < security_ids.size(); i++){
         auto this_period_info = collect_info_by_id(security_ids[i], threshold_tp);
         contract_period_computer->process_minimum_period_info(this_period_info,i,rec_count);
     }
-
 }
 #endif

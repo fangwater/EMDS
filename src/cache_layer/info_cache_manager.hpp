@@ -6,7 +6,8 @@
 #include "trade_info_cache.hpp"
 #include "parser/trade_parser.hpp"
 
-void TradeInfoZmqReceiver(std::stop_token stoken, std::shared_ptr<Parser<TradeInfo>> parser, std::string bind_to, std::string channel){
+template<EXCHANGE EX>
+void TradeInfoZmqReceiver(std::stop_token stoken, std::shared_ptr<Parser<TradeInfo,EX>> parser, std::string bind_to, std::string channel){
     zmq::context_t context(1);
     zmq::socket_t subscriber(context, zmq::socket_type::sub);
     //172.16.30.12 13002 sz_trade
@@ -33,28 +34,29 @@ void TradeInfoZmqReceiver(std::stop_token stoken, std::shared_ptr<Parser<TradeIn
 
 class TradeInfoCacheManager{
 public:
-    std::shared_ptr<TradeInfoCache> sh_trade_info_cache;
-    std::shared_ptr<TradeInfoCache> sz_trade_info_cache;
+    std::shared_ptr<TradeInfoCache<EXCHANGE::SH>> sh_trade_info_cache;
+    std::shared_ptr<TradeInfoCache<EXCHANGE::SZ>> sz_trade_info_cache;
 private:
     std::vector<std::jthread> receivers;
 private:
-    void create_receiver(std::shared_ptr<Parser<TradeInfo>> parser, std::string bind_to, std::string channel) {
+    template<EXCHANGE EX>
+    void create_receiver(const std::shared_ptr<Parser<TradeInfo,EX>>& parser, const std::string& bind_to, const std::string& channel) {
         receivers.emplace_back([parser,&bind_to,&channel](std::stop_token st) {
             TradeInfoZmqReceiver(st, parser, bind_to, channel);
         });
     }
-    void run_deliver_threadpool(int k){
-        sh_trade_info_cache->init_submit_threadpool(k);
-        sz_trade_info_cache->init_submit_threadpool(k);
+    void run_deliver_threads(int k){
+        sz_trade_info_cache->init_submit_threads(k);
+        sh_trade_info_cache->init_submit_threads(k);
     }
 public:
     explicit TradeInfoCacheManager(absl::CivilDay today, std::vector<std::array<char,11>>& sh_security_ids, std::vector<std::array<char,11>>& sz_security_ids){
         json subscribe_config = open_json_file("config/subscribe.json");
         //开启深圳，上海的Trade缓存模块，并初始化
-        sh_trade_info_cache = std::make_shared<TradeInfoCache>(1024*8*4096,today,"SH_Trade_Cache");
-        sz_trade_info_cache = std::make_shared<TradeInfoCache>(1024*8*4096,today,"SZ_Trade_Cache");
+        sh_trade_info_cache = std::make_shared<TradeInfoCache<EXCHANGE::SH>>(1024*8*4096,today);
+        sz_trade_info_cache = std::make_shared<TradeInfoCache<EXCHANGE::SZ>>(1024*8*4096,today);
         //创建TradeCache的parser
-        sh_trade_info_cache->init_message_parser("SH");
+        sh_trade_info_cache->init_message_parser();
         LOG(INFO) << "Construct parser for shanghai_trade";
         [&subscribe_config,this](){
             std::string bind_to = [&subscribe_config](){
@@ -67,7 +69,7 @@ public:
             LOG(INFO) << "Start trade data receiver for shanghai";
         }();
 
-        sz_trade_info_cache->init_message_parser("SZ");
+        sz_trade_info_cache->init_message_parser();
         LOG(INFO) << "Construct parser for shenzhen_trade";
         [&subscribe_config,this](){
             std::string bind_to = [&subscribe_config](){
@@ -80,8 +82,12 @@ public:
             LOG(INFO) << "Start trade data receiver for shenzhen";
         }();
         //为cache创造buffer,size不用过大，因为满足最小周期以后就会被收走
-        sz_trade_info_cache->init_contract_buffer_map(sh_security_ids,8192*2);
-        sh_trade_info_cache->init_contract_buffer_map(sz_security_ids,8192*2);
+        sz_trade_info_cache->init_contract_buffer_map();
+        sh_trade_info_cache->init_contract_buffer_map();
     }
+    template<EXCHANGE EX>
+    void trade_info_zmq_receiver(std::stop_token stoken);
 };
+
+
 #endif //INFO_CACHE_MANAGER_HPP

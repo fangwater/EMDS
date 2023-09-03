@@ -71,4 +71,17 @@ constexpr std::string_view str_type_ex() {
         return "Error Format";
     }
 }
+
+template<typename T, EXCHANGE EX>
+constexpr std::string_view str_type_info() {
+    if constexpr (std::is_same_v<T, TradeInfo>) {
+        return "Trade";
+    } else if constexpr (std::is_same_v<T, DepthInfo>) {
+        return "Depth";
+    } else if constexpr (std::is_same_v<T, OrderInfo>) {
+        return "Order";
+    } else {
+        return "Error Format";
+    }
+}
 #endif //INFO_HPP

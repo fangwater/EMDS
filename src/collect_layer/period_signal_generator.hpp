@@ -34,39 +34,14 @@ public:
         subscriber.connect(zmq_cfg.to_bind_addr());
         return subscriber;
     }
-    inline void minimal_period_signal_generator(std::stop_token stoken){
-        auto subscriber = zmq_bind();
-        absl::CivilDay today = collector->today;
-        int send_count = 0;
-        while (true) {
-            zmq::message_t message;
-            auto res_state = subscriber.recv(message, zmq::recv_flags::none);
-            if(!res_state){
-                logger->warn(fmt::format("Failed to rec messgae for PeriodSignalGenerator {}",str_type_ex<T,EX>()));
-            }
-            std::string message_str(static_cast<char*>(message.data()), message.size());
-            std::vector<std::string_view> x = absl::StrSplit(message_str,",");
-            int time_part_index = get_time_part_index();
-            absl::Duration bias = convert_time_string_to_duration(x[time_part_index]);
-            absl::Time today_start = absl::FromCivil(today,sh_tz.tz);
-            absl::Time t_now = today_start + bias;
-            if( is_next_civil_min(collector->last_update_time, t_now) ){
-                std::jthread collect_task([this,t_now]() {
-                    this->collector->signal_handler(t_now);
-                });
-                logger->info(fmt::format("{} Collection Signal Sended {} times",str_type_ex<T,EX>(),send_count));
-                collect_task.detach();
-            }
-            collector->last_update_time = ( collector->last_update_time < t_now ) ? t_now : collector->last_update_time;
-            if(stoken.stop_requested()){
-                logger->info(fmt::format("Cancel PeriodSignalGenerator for {}", str_type_ex<T,EX>()));
-                break;
-            }
-        }
-    }
+    void minimal_period_signal_generator(std::stop_token stoken);
 public:
     PeriodSignalGenerator();
-    constexpr int get_time_part_index() const {
+    void register_collector(std::shared_ptr<ContractBufferMapCollector<T,EX>> sp){
+        collector = sp;
+    }
+    void register_logger(const std::shared_ptr<LoggerManager>& logger_manager);
+    [[nodiscard]] constexpr int get_time_part_index() const {
         if constexpr (std::is_same_v<T, TradeInfo>) {
             if constexpr (EX == EXCHANGE::SH) {
                 return 4;
@@ -92,6 +67,11 @@ public:
 };
 
 template<typename T, EXCHANGE EX>
+void PeriodSignalGenerator<T, EX>::register_logger(const std::shared_ptr<LoggerManager> &logger_manager) {
+    logger = logger_manager->get_logger("PeriodSignalGenerator");
+}
+
+template<typename T, EXCHANGE EX>
 PeriodSignalGenerator<T, EX>::PeriodSignalGenerator() {
     SubscribeConfig sub_cfg;
     sub_cfg.init();
@@ -112,6 +92,38 @@ PeriodSignalGenerator<T, EX>::PeriodSignalGenerator() {
             zmq_cfg = sub_cfg.sh_order;
         } else if constexpr (EX == EXCHANGE::SZ) {
             zmq_cfg = sub_cfg.sz_order;
+        }
+    }
+}
+
+template<typename T,EXCHANGE EX>
+void PeriodSignalGenerator<T, EX>::minimal_period_signal_generator(std::stop_token stoken) {
+    auto subscriber = zmq_bind();
+    absl::CivilDay today = collector->today;
+    int send_count = 0;
+    while (true) {
+        zmq::message_t message;
+        auto res_state = subscriber.recv(message, zmq::recv_flags::none);
+        if(!res_state){
+            logger->warn(fmt::format("Failed to rec message for period signal generator {}",str_type_ex<T,EX>()));
+        }
+        std::string message_str(static_cast<char*>(message.data()), message.size());
+        std::vector<std::string_view> x = absl::StrSplit(message_str,",");
+        int time_part_index = get_time_part_index();
+        absl::Duration bias = convert_time_string_to_duration(x[time_part_index]);
+        absl::Time today_start = absl::FromCivil(today,sh_tz.tz);
+        absl::Time t_now = today_start + bias;
+        if( is_next_civil_min(collector->last_update_time, t_now) ){
+            std::jthread collect_task([this,t_now]() {
+                this->collector->signal_handler(t_now);
+            });
+            logger->info(fmt::format("Period signal generator {} send {} times",str_type_ex<T,EX>(),send_count));
+            collect_task.detach();
+        }
+        collector->last_update_time = ( collector->last_update_time < t_now ) ? t_now : collector->last_update_time;
+        if(stoken.stop_requested()){
+            logger->info(fmt::format("Cancel period signal generator {}", str_type_ex<T,EX>()));
+            break;
         }
     }
 }
