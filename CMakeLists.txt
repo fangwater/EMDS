@@ -16,6 +16,7 @@ find_package(cppzmq CONFIG REQUIRED)
 find_package(folly CONFIG REQUIRED)
 find_package(xsimd CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 
 set(absl_LIBRARIES
 absl::algorithm
@@ -69,5 +70,6 @@ target_link_libraries(config_maker Folly::folly Folly::folly_deps Folly::follybe
 target_link_libraries(config_maker xsimd)
 target_link_libraries(config_maker cppzmq cppzmq-static)
 target_link_libraries(config_maker nlohmann_json::nlohmann_json)
+target_link_libraries(config_maker spdlog::spdlog)
 
 

@@ -132,6 +132,7 @@ public:
     int64_t latency;
     int32_t active_threads;
     absl::Time last_update_time;
+    absl::CivilDay today;
     int64_t rec_count;
 public:
     ContractBufferMapCollector();
@@ -179,7 +180,6 @@ int ContractBufferMapCollector<T,EX>::init() {
         this->latency = config["system"]["collect_latency(ms)"];
         this->active_threads = config["system"]["active_threads"];
         this->last_update_time = [&config,this](){
-            absl::CivilDay today;
             //当日日期需要直接指定，因为无法判断hfq_table中，最后一天之后多久是下一个交易日，节假日的维护不稳定
             std::string str_day = config["system"]["date"];
             if (!absl::ParseCivilTime(str_day, &today)) {

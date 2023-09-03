@@ -3,6 +3,8 @@
 #include <absl/strings/numbers.h>
 #include <absl/strings/str_split.h>
 #include <absl/time/time.h>
+#include <chrono>
+#include <fmt/chrono.h>
 
 struct ShanghaiTimeZone {
     absl::TimeZone tz;
@@ -10,6 +12,11 @@ struct ShanghaiTimeZone {
         absl::LoadTimeZone("Asia/Shanghai", &tz);
     }
 }sh_tz;
+
+std::string get_current_time_as_string() {
+    auto now = std::chrono::system_clock::now();
+    return fmt::format("{:%Y-%m-%d %H:%M:%S}", now);
+}
 
 std::function<absl::Duration(std::string_view time_str)> convert_time_string_to_duration = [](std::string_view time_str){
     //09:15:00.040

@@ -122,6 +122,9 @@ public:
     std::string ip;
     int64_t port;
     std::string channel;
+    std::string to_bind_addr(){
+        return fmt::format("tcp://{}:{}",ip,port);
+    }
 };
 
 class SubscribeConfig{
@@ -133,9 +136,32 @@ public:
     ZmqConfig sz_depth;
     ZmqConfig sh_depth;
 public:
-    void init(){
-        json subscribe_config = open_json_file("config/subscribe.json");
-        
+    void init() {
+        nlohmann::json subscribe_config = open_json_file("config/subscribe.json");
+        // sh_trade
+        sh_trade.ip = subscribe_config["trade"]["sh"]["ip"];
+        sh_trade.port = subscribe_config["trade"]["sh"]["port"];
+        sh_trade.channel = subscribe_config["trade"]["sh"]["channel"];
+        // sz_trade
+        sz_trade.ip = subscribe_config["trade"]["sz"]["ip"];
+        sz_trade.port = subscribe_config["trade"]["sz"]["port"];
+        sz_trade.channel = subscribe_config["trade"]["sz"]["channel"];
+        // sh_order
+        sh_order.ip = subscribe_config["order"]["sh"]["ip"];
+        sh_order.port = subscribe_config["order"]["sh"]["port"];
+        sh_order.channel = subscribe_config["order"]["sh"]["channel"];
+        // sz_order
+        sz_order.ip = subscribe_config["order"]["sz"]["ip"];
+        sz_order.port = subscribe_config["order"]["sz"]["port"];
+        sz_order.channel = subscribe_config["order"]["sz"]["channel"];
+        // sh_depth
+        sh_depth.ip = subscribe_config["depth"]["sh"]["ip"];
+        sh_depth.port = subscribe_config["depth"]["sh"]["port"];
+        sh_depth.channel = subscribe_config["depth"]["sh"]["channel"];
+        // sz_depth
+        sz_depth.ip = subscribe_config["depth"]["sz"]["ip"];
+        sz_depth.port = subscribe_config["depth"]["sz"]["port"];
+        sz_depth.channel = subscribe_config["depth"]["sz"]["channel"];
     }
 };
 

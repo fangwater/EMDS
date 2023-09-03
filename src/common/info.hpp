@@ -46,4 +46,29 @@ enum class EXCHANGE{
     SZ,
     SH
 };
+
+template<typename T, EXCHANGE EX>
+constexpr std::string_view str_type_ex() {
+    if constexpr (std::is_same_v<T, TradeInfo>) {
+        if constexpr (EX == EXCHANGE::SH) {
+            return "Trade : SH";
+        } else if constexpr (EX == EXCHANGE::SZ) {
+            return "Trade : SZ";
+        }
+    } else if constexpr (std::is_same_v<T, DepthInfo>) {
+        if constexpr (EX == EXCHANGE::SH) {
+            return "Depth : SH";
+        } else if constexpr (EX == EXCHANGE::SZ) {
+            return "Depth : SZ";
+        }
+    } else if constexpr (std::is_same_v<T, OrderInfo>) {
+        if constexpr (EX == EXCHANGE::SH) {
+            return "Order : SH";
+        } else if constexpr (EX == EXCHANGE::SZ) {
+            return "Order : SZ";
+        }
+    } else {
+        return "Error Format";
+    }
+}
 #endif //INFO_HPP
