@@ -6,7 +6,8 @@
 template <typename T>
 class FeatureCallBack{
 public:
-    virtual std::vector<double> calculate(const PackedInfoSp<T>& tick_buffer_sp, const int index);
+    virtual std::vector<double> calculate(const PackedInfoSp<T>& tick_buffer_sp, int index) = 0;
+    virtual ~FeatureCallBack() = default;
 };
 
 template <typename T>

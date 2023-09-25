@@ -17,16 +17,6 @@ public:
             throw std::runtime_error( fmt::format("Fail to create parser for {}", str_type_ex<TradeInfo,EX>()));
         }
     }
-
-    int init_contract_buffer_map() override{
-            this->security_id_to_buffer_map_sp = std::make_shared<ContractBufferMap<TradeInfo,EX>>();
-            if(this->security_id_to_buffer_map_sp){
-                this->logger->info(fmt::format("Success contract buffer for info_cache {}", str_type_ex<TradeInfo,EX>()));
-                return 0;
-            }else{
-                throw std::runtime_error(fmt::format("Fail to create security buffer for info_cache {}", str_type_ex<TradeInfo,EX>()));
-            }
-    }
     TradeInfoCache(std::size_t queue_size, absl::CivilDay today)
             : InfoCache<TradeInfo,EX>(queue_size, today) {}
 };

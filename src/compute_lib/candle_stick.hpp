@@ -14,17 +14,17 @@ class CandleStick : public FeatureCallBack<TradeInfo>{
 private:
     std::vector<double> previous_close_price;
 public:
-    CandleStick(std::vector<double>& closeprices){
+    explicit CandleStick(std::vector<double>& closeprices){
         previous_close_price = closeprices;
     }
-    virtual std::vector<double> calculate(const PackedInfoSp<TradeInfo>& tick_buffer_sp,const int security_id_index) override;
+    std::vector<double> calculate(const PackedInfoSp<TradeInfo>& tick_buffer_sp,int security_id_index) override;
 };
 
-std::vector<double> CandleStick::calculate(const PackedInfoSp<TradeInfo>& tick_buffer_sp,const int security_id_index){
+std::vector<double> CandleStick::calculate(const PackedInfoSp<TradeInfo>& tick_buffer_sp,int security_id_index){
     auto ele_count = tick_buffer_sp->size();
     if(ele_count == 0){
         double inheritance_price = previous_close_price[security_id_index];
-        std::vector<double>{0,0,0,0,0,0,0,0,0,0,0,inheritance_price,inheritance_price};
+        return std::vector<double>{0,0,0,0,0,0,0,0,0,0,0,inheritance_price,inheritance_price};
     }
     auto aa_tradp = std::make_unique<std::vector<double,xsimd::aligned_allocator<double>>>(ele_count);
     auto aa_S_tradp = std::make_unique<std::vector<double,xsimd::aligned_allocator<double>>>();

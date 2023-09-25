@@ -94,8 +94,10 @@
         "hash_map": "cpp",
         "hash_set": "cpp",
         "rope": "cpp",
-        "slist": "cpp"
+        "slist": "cpp",
+        "format": "cpp",
+        "stdfloat": "cpp"
     },
     "cmake.configureOnOpen": true,
-    "C_Cpp.default.compilerPath": "/usr/bin/g++-12"
+    "C_Cpp.default.compilerPath": "/usr/local/bin/g++"
 }

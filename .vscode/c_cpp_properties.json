@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/fanghz/lib/vcpkg/installed/x64-linux/include/**"
+                "/home/fanghaizhou/lib/vcpkg/installed/x64-linux/include/**"
             ],
             "defines": [],
             "cStandard": "c17",

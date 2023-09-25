@@ -56,10 +56,10 @@ public:
 template<typename T, EXCHANGE EX>
 class ContractBufferMap{
 public:
-    absl::flat_hash_map<std::array<char,11>, ContractBuffer<T>> securiy_id_to_contract_buffer_map;
+    absl::flat_hash_map<std::array<char,11>, ContractBuffer<T>> security_id_to_contract_buffer_map;
 public:
     ContractBufferMap() = default;
-    int init(){
+    void init(){
         std::vector<std::array<char,11>> security_ids = [](){
             SecurityId security_id_config;
             security_id_config.init();
@@ -76,14 +76,14 @@ public:
             system_param.init();
             return system_param.contract_buffer_size;
         }();
-        securiy_id_to_contract_buffer_map.reserve(security_ids.size());
+        security_id_to_contract_buffer_map.reserve(security_ids.size());
         for(auto& security_id : security_ids){
-            securiy_id_to_contract_buffer_map.insert( {security_id, ContractBuffer<T>(contract_buffer_size)} );
+            security_id_to_contract_buffer_map.insert( {security_id, ContractBuffer<T>(contract_buffer_size)} );
         }
     }
     bool insert(std::shared_ptr<T> info){
-        auto iter = securiy_id_to_contract_buffer_map.find(info->SecurityID);
-        if(iter == securiy_id_to_contract_buffer_map.end()){
+        auto iter = security_id_to_contract_buffer_map.find(info->SecurityID);
+        if(iter == security_id_to_contract_buffer_map.end()){
             throw std::runtime_error("security_id is not included in the securiy_id_to_contract_buffer_map");
         }else{
             iter->second.append_info(info);

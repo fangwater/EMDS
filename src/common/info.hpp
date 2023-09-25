@@ -51,28 +51,28 @@ template<typename T, EXCHANGE EX>
 constexpr std::string_view str_type_ex() {
     if constexpr (std::is_same_v<T, TradeInfo>) {
         if constexpr (EX == EXCHANGE::SH) {
-            return "Trade : SH";
+            return "Trade_SH";
         } else if constexpr (EX == EXCHANGE::SZ) {
-            return "Trade : SZ";
+            return "Trade_SZ";
         }
     } else if constexpr (std::is_same_v<T, DepthInfo>) {
         if constexpr (EX == EXCHANGE::SH) {
-            return "Depth : SH";
+            return "Depth_SH";
         } else if constexpr (EX == EXCHANGE::SZ) {
-            return "Depth : SZ";
+            return "Depth_SZ";
         }
     } else if constexpr (std::is_same_v<T, OrderInfo>) {
         if constexpr (EX == EXCHANGE::SH) {
-            return "Order : SH";
+            return "Order_SH";
         } else if constexpr (EX == EXCHANGE::SZ) {
-            return "Order : SZ";
+            return "Order_SZ";
         }
     } else {
         return "Error Format";
     }
 }
 
-template<typename T, EXCHANGE EX>
+template<typename T>
 constexpr std::string_view str_type_info() {
     if constexpr (std::is_same_v<T, TradeInfo>) {
         return "Trade";

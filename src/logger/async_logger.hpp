@@ -51,8 +51,10 @@ private:
     }
 public:
     LoggerManager(): factory(8192){
-        self_logger = add_logger("LoggerManager");
         default_level = spdlog::level::level_enum::info;
+    }
+    void add_self_logger(){
+        self_logger = add_logger("LoggerManager");
     }
     std::shared_ptr<spdlog::async_logger> get_logger(const std::string& name) {
         if (loggers.find(name) == loggers.end()) {

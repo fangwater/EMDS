@@ -3,6 +3,9 @@
 #include "aggregator.hpp"
 class AggregatorManager{
 private:
+    using period_update_item = std::pair<int,int64_t>;
+    absl::flat_hash_map<period_update_item,int> finish_map;
+    std::mutex mtx;
     bool need_dump_file;
     std::string dump_dir;
     std::shared_ptr<absl::flat_hash_map<std::array<char,11>, int>> security_id_to_row_map;
@@ -14,7 +17,7 @@ private:
 public:
     int commit(PeriodResult&& period_res);
     int period_finish(int period, int64_t tp);
-    explicit AggregatorManager(std::string dump_dir);
+    explicit AggregatorManager(std::string dump_path);
     AggregatorManager():need_dump_file(false){};
     int init(std::string path_to_config_folder, std::string manager_type);
 };
@@ -27,18 +30,11 @@ int AggregatorManager::init(std::string path_to_config_folder, std::string manag
 
     auto security_ids = [&path_to_config_folder](){
         std::vector<std::array<char, 11>> security_ids;
-        auto security_ids_json = open_json_file(fmt::format("{}/{}",path_to_config_folder,"security_ids.json"));
-        for (const auto& item : security_ids_json["total"]) {
-            std::array<char, 11> arr;
-            std::string strItem = item;
-            if (strItem.length() == 11) { // Ensure the string is exactly of length 11
-                std::copy(strItem.begin(), strItem.end(), arr.begin());
-                security_ids.push_back(arr);
-            } else {
-                throw std::runtime_error("security_id has format error");
-            }
-        }
-        return security_ids;
+        auto security_ids_json = open_json_file(fmt::format("{}/{}",path_to_config_folder,"traced_contract.json"));
+        std::vector<std::string> SH_ids_str = security_ids_json["sh"];
+        std::vector<std::string> SZ_ids_str = security_ids_json["sz"];
+        auto ids_str = vecMerge(SH_ids_str,SZ_ids_str);
+        return vecConvertStrToArray<11>(ids_str);
     }();
 
     auto id_to_row_map_sp = [&security_ids](){
@@ -50,7 +46,7 @@ int AggregatorManager::init(std::string path_to_config_folder, std::string manag
     }();
     set_security_id_to_row_map(id_to_row_map_sp);
 
-    auto feature_format_map = [&path_to_config_folder,this](){
+    auto feature_format_map = [&path_to_config_folder](){
         auto feature_format_json = open_json_file(fmt::format("{}/{}",path_to_config_folder,"feature_format.json"));
         std::unordered_map<std::string, std::vector<std::string>> feature_format_map;
         for (auto& [key, value] : feature_format_json.items()) {
@@ -59,13 +55,13 @@ int AggregatorManager::init(std::string path_to_config_folder, std::string manag
         return feature_format_map;
     }();
     auto [unique_periods,per_period_called_functions,per_period_bind_addrs] = [&path_to_config_folder,&manager_type](){
-        std::vector<int> unique_periods;
+        std::vector<int> periods;
         std::vector<std::vector<std::string>> called_functions;
         std::vector<std::vector<int>> bind_ports;
 
         auto period_call_json = open_json_file(fmt::format("{}/{}",path_to_config_folder,"period_call.json"));
         for (const auto& item : period_call_json[manager_type]) {
-            unique_periods.push_back(item["period"]);
+            periods.push_back(item["period"]);
             called_functions.push_back(item["called_func"].get<std::vector<std::string>>());
             bind_ports.push_back(item["port"].get<std::vector<int>>());
         }
@@ -79,7 +75,7 @@ int AggregatorManager::init(std::string path_to_config_folder, std::string manag
             }
             called_addrs.push_back(addrs);
         }
-        return std::tuple(std::move(unique_periods), std::move(called_functions), std::move(called_addrs));
+        return std::tuple(std::move(periods), std::move(called_functions), std::move(called_addrs));
     }();
 
     int aggregator_count = 0;
@@ -87,7 +83,7 @@ int AggregatorManager::init(std::string path_to_config_folder, std::string manag
         for(int j = 0; j < per_period_called_functions[i].size(); j++){
             /*debug*/
             aggregator_count++;
-            DLOG(INFO) << fmt::format("\nCreating aggregator {}:\nperiod: {}\nfunction:{}\nbind_addr:{}\n", aggregator_count, unique_periods[i], per_period_called_functions[i][j],per_period_bind_addrs[i][j]);
+            LOG(INFO) << fmt::format("\nCreating aggregator {}:\nperiod: {}\nfunction:{}\nbind_addr:{}\n", aggregator_count, unique_periods[i], per_period_called_functions[i][j],per_period_bind_addrs[i][j]);
             if(need_dump_file){
                 std::string feature_folder_path = fmt::format("{}/{}", dump_dir, per_period_called_functions[i][j]);
                 if(std::filesystem::exists(feature_folder_path)){
@@ -156,28 +152,45 @@ int AggregatorManager::commit(PeriodResult&& period_res){
         aggregators->at(i)->commit(row, period_res.results[i]);
     }
     return 0;
-};
+}
 
 int AggregatorManager::period_finish(int period, int64_t tp){
-    auto& aggregators = period_aggregators_map.at(period);
-    for(int i = 0; i < aggregators->size(); i++){
-        auto& aggregator = aggregators->at(i);
-        aggregator->set_time_col(tp);
-        aggregator->publish();
-        if(need_dump_file){
-            /*path: dump_dir/function_name/period_i/duration*/
-            /* 2023_08_12/candle_stick/period_{}/09_31_03_000 */
-            std::string folder_dir = fmt::format("{}/{}/period_{}",dump_dir,aggregator->get_name(),period);
-            if(!std::filesystem::exists(folder_dir)){
-                std::filesystem::create_directories(folder_dir);
+    std::lock_guard<std::mutex> lock(mtx);
+    period_update_item period_record = std::pair(period,tp);
+    //Map中查看是否有存在
+    auto [iter,inserted] = finish_map.try_emplace(period_record,1);
+    if(inserted){
+        //插入成功，代表这个period_tp从未被提交过
+    }else{
+        iter->second++;
+        if(iter->second > 2){
+            LOG(WARNING) << "Consecutive first calls to period_finish without a second call!";
+        }else{
+            DLOG(INFO) << "Correct!";
+        }
+        //第二次插入这个key, 正确
+        finish_map.erase(iter);
+        auto& aggregators = period_aggregators_map.at(period);
+        for(int i = 0; i < aggregators->size(); i++){
+            auto& aggregator = aggregators->at(i);
+            aggregator->set_time_col(tp);
+            aggregator->publish();
+            if(need_dump_file){
+                /*path: dump_dir/function_name/period_i/duration*/
+                /* 2023_08_12/candle_stick/period_{}/09_31_03_000 */
+                std::string folder_dir = fmt::format("{}/{}/period_{}",dump_dir,aggregator->get_name(),period);
+                if(!std::filesystem::exists(folder_dir)){
+                    std::filesystem::create_directories(folder_dir);
+                }
+                std::string path = fmt::format("{}/{}.parquet",folder_dir,format_tp_to_string(tp));
+                aggregator->dump(path);
+                // (void)std::async(std::launch::async, [&aggregator,dump_path = std::move(path)](){
+                //     aggregator->dump(dump_path);
+                // });
             }
-            std::string path = fmt::format("{}/{}.parquet",folder_dir,format_tp_to_string(tp));
-            aggregator->dump(path);
-            // (void)std::async(std::launch::async, [&aggregator,dump_path = std::move(path)](){
-            //     aggregator->dump(dump_path);
-            // });
-        }  
+        }
     }
+
     return 0;
 }
 #endif

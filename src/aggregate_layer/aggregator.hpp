@@ -218,7 +218,7 @@ public:
     int set_time_col(int64_t ms_tp);
     int commit(int row, std::vector<double>& feature_res);
     int publish();
-    const std::string& get_name() const { return name; }
+    [[nodiscard]] const std::string& get_name() const { return name; }
     void dump(const std::string& path);
     explicit MarketDataAggregator(const std::string& bind_to, const std::string& function_name)
         :sender(bind_to),committed(0),name(function_name){};
@@ -228,7 +228,7 @@ public:
         std::vector<std::string> col_names = {"securityid", "datetime"};
         std::vector<uint32_t> ele_size = {11,8};
         for(auto& feature_col_name : feature_col_names){
-            col_types.push_back("_double");
+            col_types.emplace_back("_double");
             ele_size.push_back(8);
             col_names.push_back(feature_col_name);
         }

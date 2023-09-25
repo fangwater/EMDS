@@ -12,6 +12,8 @@
 #include <fmt/format.h>
 #include <iostream>
 #include <fstream>
+#include <numeric>
+#include "info.hpp"
 
 using json = nlohmann::json;
 
@@ -21,6 +23,27 @@ inline void CHECK_RETURN_VALUE(bool res, std::string error_msg){
     }
     return;
 }
+
+inline std::string absl_time_to_str(absl::Time now){
+    std::string time_str = absl::FormatTime("%m-%d %H:%M:%S.%f", now, absl::LocalTimeZone());
+    // Truncate the last three characters (microseconds -> milliseconds)
+    time_str = time_str.substr(0, time_str.size() - 3);
+    return time_str;
+}
+
+template<typename T,EXCHANGE EX>
+void set_trade_suffix(std::array<char, 11>& arr) {
+    if constexpr (std::is_same_v<T,TradeInfo>){
+        if constexpr (EX == EXCHANGE::SZ){
+            const char* suffix = ".XSHE";
+            std::memcpy(&arr[arr.size() - 5], suffix, 5);
+        }else {
+            const char* suffix = ".XSHG";
+            std::memcpy(&arr[arr.size() - 5], suffix, 5);
+        }
+    }
+}
+
 
 json open_json_file(std::string path_to_json){
     std::ifstream config_file(path_to_json);
@@ -95,7 +118,6 @@ std::vector<std::array<char, N>> vecConvertStrToArray(const std::vector<std::str
 
     return output;
 }
-
 
 template <std::size_t N>
 std::array<char, N> stringViewToArray(std::string_view str) {

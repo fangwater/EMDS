@@ -62,6 +62,7 @@ public:
                 feature_periods_list.push_back(std::move(this_feature_period));
                 feature_name_list.push_back(function_ctx_json["name"]);
             }
+            //TODO
         }
         //组织合并，以最小公共周期重排
         [&feature_name_list,&feature_periods_list,this](){
@@ -104,7 +105,7 @@ public:
     std::vector<std::array<char,11>> sz;
     std::vector<std::array<char,11>> all;
     void init(){
-        json hfq_output = json::parse(std::ifstream("traced_contract.json"));
+        json hfq_output = json::parse(std::ifstream("config/traced_contract.json"));
         sz = [&hfq_output](){
             std::vector<std::string> sz_securitys_str = hfq_output["sz"];
             return vecConvertStrToArray<11>(sz_securitys_str);
@@ -114,6 +115,33 @@ public:
             return vecConvertStrToArray<11>(sz_securitys_str);
         }();
         all = vecMerge(sz,sh);
+    }
+    void display() {
+        // 用于打印sz、sh和all向量的内容
+        std::cout << "sz:\n";
+        for (const auto& s : sz) {
+            for(int i = 0; i < s.size(); i++){
+                std::cout << s[i];
+            }
+            std::cout << " ";
+        }
+
+        std::cout << "\nsh:\n";
+        for (const auto& s : sh) {
+            for(int i = 0; i < s.size(); i++){
+                std::cout << s[i];
+            }
+            std::cout << " ";
+        }
+
+        std::cout << "\nall:\n";
+        for (const auto& s : all) {
+            for(int i = 0; i < s.size(); i++){
+                std::cout << s[i];
+            }
+            std::cout << " ";
+        }
+        std::cout << std::endl;
     }
 };
 

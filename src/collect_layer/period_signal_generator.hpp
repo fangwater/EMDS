@@ -24,15 +24,19 @@ public:
     ZmqConfig zmq_cfg;
     std::shared_ptr<ContractBufferMapCollector<T,EX>> collector;
     LoggerPtr logger;
+private:
+    zmq::context_t context;       // ZMQ context as a member
+    zmq::socket_t subscriber;     // ZMQ subscriber as a member
 public:
-    inline auto zmq_bind(){
-        zmq::context_t context(1);
-        zmq::socket_t subscriber(context, zmq::socket_type::sub);
-        subscriber.set(zmq::sockopt::rcvbuf, 1024 * 1024);
-        subscriber.set(zmq::sockopt::sndhwm, 0);
-        subscriber.set(zmq::sockopt::subscribe,zmq_cfg.channel);
-        subscriber.connect(zmq_cfg.to_bind_addr());
-        return subscriber;
+    void zmq_bind(){
+        try {
+            subscriber.set(zmq::sockopt::rcvbuf, 1024 * 1024);
+            subscriber.set(zmq::sockopt::rcvhwm, 0);
+            subscriber.set(zmq::sockopt::subscribe, zmq_cfg.channel);
+            subscriber.connect(zmq_cfg.to_bind_addr());
+        } catch (const zmq::error_t& e) {
+            LOG(ERROR) << "ZMQ Error: " << e.what();
+        }
     }
     void minimal_period_signal_generator(std::stop_token stoken);
 public:
@@ -68,11 +72,11 @@ public:
 
 template<typename T, EXCHANGE EX>
 void PeriodSignalGenerator<T, EX>::register_logger(const std::shared_ptr<LoggerManager> &logger_manager) {
-    logger = logger_manager->get_logger("PeriodSignalGenerator");
+    logger = logger_manager->get_logger(fmt::format("PeriodSignalGenerator_{}", str_type_ex<TradeInfo,EX>()));
 }
 
 template<typename T, EXCHANGE EX>
-PeriodSignalGenerator<T, EX>::PeriodSignalGenerator() {
+PeriodSignalGenerator<T, EX>::PeriodSignalGenerator():context(1), subscriber(context, zmq::socket_type::sub){
     SubscribeConfig sub_cfg;
     sub_cfg.init();
     if constexpr (std::is_same_v<T, TradeInfo>) {
@@ -98,7 +102,7 @@ PeriodSignalGenerator<T, EX>::PeriodSignalGenerator() {
 
 template<typename T,EXCHANGE EX>
 void PeriodSignalGenerator<T, EX>::minimal_period_signal_generator(std::stop_token stoken) {
-    auto subscriber = zmq_bind();
+    zmq_bind();
     absl::CivilDay today = collector->today;
     int send_count = 0;
     while (true) {
@@ -117,11 +121,16 @@ void PeriodSignalGenerator<T, EX>::minimal_period_signal_generator(std::stop_tok
             std::jthread collect_task([this,t_now]() {
                 this->collector->signal_handler(t_now);
             });
+            send_count++;
+            DLOG(INFO) << fmt::format("From {} to {}", absl_time_to_str(collector->last_update_time),absl_time_to_str(t_now));
+            DLOG(INFO) << fmt::format("Period signal generator {} send {} times",str_type_ex<T,EX>(),send_count);
+            logger->info(fmt::format("From {} to {}", absl_time_to_str(collector->last_update_time),absl_time_to_str(t_now)));
             logger->info(fmt::format("Period signal generator {} send {} times",str_type_ex<T,EX>(),send_count));
             collect_task.detach();
         }
         collector->last_update_time = ( collector->last_update_time < t_now ) ? t_now : collector->last_update_time;
         if(stoken.stop_requested()){
+            DLOG(INFO) << fmt::format("Cancel period signal generator {}", str_type_ex<T,EX>());
             logger->info(fmt::format("Cancel period signal generator {}", str_type_ex<T,EX>()));
             break;
         }

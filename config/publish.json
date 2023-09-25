@@ -1,20 +1,20 @@
 {
-    "ip":"0.0.0.0",
+    "ip":"172.16.30.36",
     "trade":[
         {
             "open":true,
             "name":"candle_stick",
-            "period":[3,5,15,30]
+            "period":[1,5,15,30]
         },
         {
             "open":true,
             "name":"test1",
-            "period":[2,4,6]
+            "period":[1,5,15]
         },
         {
             "open":true,
             "name":"test2",
-            "period":[4,8,12]
+            "period":[10,20,30]
         }
     ],
     "order": [],

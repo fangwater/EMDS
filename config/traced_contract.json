@@ -1,0 +1,6 @@
+{
+    "sz": ["000001.XSHE", "000002.XSHE", "000003.XSHE"],
+    "sh": ["000004.XSHG", "000005.XSHG", "000006.XSHG"],
+    "sz_closeprice":[1,2,3,4],
+    "sh_closeprice":[5,6,3,4]
+}

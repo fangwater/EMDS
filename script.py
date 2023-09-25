@@ -15,7 +15,7 @@ import datetime
 import json
 import sys
 
-def process_data(path):
+def process_data(path,date_str):
     if not os.path.exists(path):
         print(f"The file {path} does not exist!")
         return

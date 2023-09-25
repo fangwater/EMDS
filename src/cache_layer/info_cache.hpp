@@ -15,6 +15,7 @@
 #include "../common/info.hpp"
 #include "contract_buffer.hpp"
 
+
 template<typename T, EXCHANGE EX>
 class InfoCache : public std::enable_shared_from_this<InfoCache<T,EX>>{
 public:
@@ -29,12 +30,12 @@ public:
         today_start = absl::FromCivil(today, sh_tz.tz);
     }
     void register_logger(const std::shared_ptr<LoggerManager>& logger_manager){
-        logger = logger_manager->get_logger(fmt::format("InfoCache[{}]", str_type_ex<T,EX>()));
+        logger = logger_manager->get_logger(fmt::format("InfoCache_{}", str_type_ex<T,EX>()));
     }
     //put Info to MPSC queue after parser
     void put_info(std::shared_ptr<T> info_sp){
         if( !info_queue_ptr->write(info_sp)){
-            throw std::runtime_error(fmt::format("Queue of InfoCache[{}] not enough", str_type_ex<T,EX>()));
+            throw std::runtime_error(fmt::format("Queue of InfoCache_{} not enough", str_type_ex<T,EX>()));
         }
     }
     //load Info from MPSC queue
@@ -52,7 +53,7 @@ public:
             std::shared_ptr<T> info_ptr = load_info();
             if(info_ptr != nullptr){
                 if(!security_id_to_buffer_map_sp->insert(info_ptr)){
-                    logger->warn(fmt::format("Insert failed in InfoCache[{}]",str_type_ex<T,EX>()));
+                    logger->warn(fmt::format("Insert failed in InfoCache_{}",str_type_ex<T,EX>()));
                 }
             }else{
                 std::this_thread::yield();
@@ -68,9 +69,18 @@ public:
                         self->submit_to_contract_buffer(stoken);
                     });
         }
-        logger->info(fmt::format("Success create thread pool for info_cache[{}]", str_type_ex<T,EX>()));
+        logger->info(fmt::format("Success create thread pool for info_cache_{}", str_type_ex<T,EX>()));
     }
-    virtual int init_contract_buffer_map() = 0;
+    int init_contract_buffer_map(){
+        security_id_to_buffer_map_sp = std::make_shared<ContractBufferMap<T,EX>>();
+        security_id_to_buffer_map_sp->init();
+        if(security_id_to_buffer_map_sp){
+            this->logger->info(fmt::format("Success contract buffer for info_cache {}", str_type_ex<T,EX>()));
+            return 0;
+        }else{
+            throw std::runtime_error(fmt::format("Fail to create security buffer for info_cache {}", str_type_ex<T,EX>()));
+        }
+    };
     virtual void init_message_parser() = 0;
     ~InfoCache(){
         for(auto& thread : buffer_submitter){
