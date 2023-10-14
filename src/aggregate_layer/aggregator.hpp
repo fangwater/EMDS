@@ -40,7 +40,6 @@ int ZmqSender::forward(std::shared_ptr<arrow::Buffer> buffer)
     while (!sent && retry_count < max_retries) {
         try {
             sender.send(non_blocking_msg, zmq::send_flags::dontwait);
-            std::cout << non_blocking_msg << std::endl;
             sent = true;
         } catch (const zmq::error_t& e) {
             if (e.num() == EAGAIN) {
@@ -238,8 +237,8 @@ public:
 };
 
 int MarketDataAggregator::publish(){
-    if(committed != table.rows){
-        LOG(WARNING) << fmt::format("{} only has been committed {}, but need {}",name,committed,table.rows);
+    if(committed > table.rows){
+        LOG(WARNING) << fmt::format("{} committed {}, but only need {}",name,committed,table.rows);
     }
     committed = 0;
     auto arrow_buffer_sp = table.serialize_to_arrow();

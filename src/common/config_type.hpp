@@ -3,6 +3,16 @@
 #include "utils.hpp"
 #include <absl/time/time.h>
 #include <absl/time/civil_time.h>
+
+class FeatureOption{
+public:
+    json config;
+public:
+    void init(){
+        config = open_json_file("config/feature_option.json");
+    }
+};
+
 class SystemParam{
 public:
     int collect_latency_ms;
@@ -87,11 +97,11 @@ public:
     std::vector<double> all;
     void init(){
         json hfq_output = json::parse(std::ifstream("config/traced_contract.json"));
-        sh = [&hfq_output](){
+        sz = [&hfq_output](){
             std::vector<double> sz_security_closeprices = hfq_output["sz_closeprice"];
             return sz_security_closeprices;
         }();
-        sz = [&hfq_output](){
+        sh = [&hfq_output](){
             std::vector<double> sh_security_closeprices = hfq_output["sh_closeprice"];
             return sh_security_closeprices;
         }();

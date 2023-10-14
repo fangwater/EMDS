@@ -1,6 +1,7 @@
-#ifndef DF_ALG
-#define DF_ALG
+#ifndef DF_ALG_H
+#define DF_ALG_H
 
+#include <bits/stdc++.h>
 #include <immintrin.h>
 #include <iostream>
 #include <memory>
@@ -9,6 +10,7 @@
 #include <stdexcept>
 #include <absl/container/flat_hash_map.h>
 #include <fmt/format.h>
+#include <type_traits>
 
 double division_no_inf(double x, double y) {
     if (y == 0.0) {
@@ -21,6 +23,11 @@ double division_no_inf(double x, double y) {
         return res;
     }
 }
+
+template<typename T>
+concept TriviallyCopyable = std::is_trivially_copyable_v<T>;
+
+
 
 template<typename T>
 std::unique_ptr<std::vector<T>> cast_to_double(std::unique_ptr<std::vector<T>>& base_ptr){
@@ -92,6 +99,30 @@ void replace_nan_with_zero(std::unique_ptr<std::vector<double>>& base_ptr){
 }
 
 namespace concat{
+    template<TriviallyCopyable T>
+    std::unique_ptr<std::vector<T>> direct(std::unique_ptr<std::vector<T>>& vec1_ptr, std::unique_ptr<std::vector<T>>& vec2_ptr) {
+        size_t size1 = vec1_ptr->size();
+        size_t size2 = vec2_ptr->size();
+        std::unique_ptr<std::vector<T>> merged_vec_ptr = std::make_unique<std::vector<T>>(size1 + size2);
+
+        std::memcpy(merged_vec_ptr->data(), vec1_ptr->data(), size1 * sizeof(T));
+        std::memcpy(merged_vec_ptr->data() + size1, vec2_ptr->data(), size2 * sizeof(T));
+
+        return merged_vec_ptr;
+    }
+    template<typename T>
+    std::unique_ptr<std::vector<T>> direct_copy(const std::unique_ptr<std::vector<T>>& vec1_ptr, const std::unique_ptr<std::vector<T>>& vec2_ptr) {
+        size_t size1 = vec1_ptr->size();
+        size_t size2 = vec2_ptr->size();
+        std::unique_ptr<std::vector<T>> merged_vec_ptr = std::make_unique<std::vector<T>>(size1 + size2);
+
+        std::copy(vec1_ptr->begin(), vec1_ptr->end(), merged_vec_ptr->begin());
+        std::copy(vec2_ptr->begin(), vec2_ptr->end(), merged_vec_ptr->begin() + size1);
+
+        return merged_vec_ptr;
+    }
+
+
     template<typename T>
     auto horizontal(std::unique_ptr<std::vector<T>>& vec1_ptr, std::unique_ptr<std::vector<T>>& vec2_ptr){
         std::unique_ptr<std::vector<T>> merged_vec_ptr = std::make_unique<std::vector<T>>();
@@ -132,7 +163,7 @@ namespace concat{
             res_ptr->at(mapping_vec_ptr->at(i)) = base_ptr->at(i);
         }
         return std::move( res_ptr );
-    }
+    };
 
     template<typename T>
     requires(std::is_same_v<T,int64_t>)
@@ -153,13 +184,13 @@ namespace concat{
 
 }
 
-double quantile(std::unique_ptr<std::vector<double>>& data_ptr, double percentile) {
+double quantile_mod(std::unique_ptr<std::vector<double>>& data_ptr, double percentile) {
     if (data_ptr->empty() || percentile <= 0 || percentile >= 1) {
         return 0.0;
     }
     double index = data_ptr->size() * percentile;
-    int lower_index = static_cast<int>(index + 0.00001);
-    int upper_index = static_cast<int>(std::ceil(index - 0.00001));
+    int lower_index = static_cast<int>(index + 0.000000001);
+    int upper_index = static_cast<int>(std::ceil(index - 0.000000001));
     if (lower_index == upper_index == index) {
         std::nth_element(data_ptr->begin(), data_ptr->begin() + lower_index, data_ptr->end());
         return data_ptr->at(lower_index-1);
@@ -171,6 +202,40 @@ double quantile(std::unique_ptr<std::vector<double>>& data_ptr, double percentil
     double result = lower_value + (upper_value - lower_value) * (index - lower_index);
     return result;
 }
+
+double quantile(const std::unique_ptr<std::vector<double>>& data_ptr, double percentile) {
+    if (data_ptr->empty() || percentile < 0 || percentile > 1) {
+        return 0.0;
+    }
+
+    // Create a copy of the input data to avoid modifying the original vector
+    std::vector<double> data_copy = *data_ptr;
+
+    if (percentile == 0) {
+        return *std::min_element(data_copy.begin(), data_copy.end());
+    }
+    if (percentile == 1) {
+        return *std::max_element(data_copy.begin(), data_copy.end());
+    }
+
+    double index = (data_copy.size() - 1) * percentile;
+    int lower_index = static_cast<int>(std::floor(index));
+    int upper_index = static_cast<int>(std::ceil(index));
+
+    std::nth_element(data_copy.begin(), data_copy.begin() + lower_index, data_copy.end());
+    double lower_value = data_copy.at(lower_index);
+
+    if (lower_index == upper_index) {
+        return lower_value;
+    }
+
+    std::nth_element(data_copy.begin(), data_copy.begin() + upper_index, data_copy.end());
+    double upper_value = data_copy.at(upper_index);
+
+    double result = lower_value + (upper_value - lower_value) * (index - lower_index);
+    return result;
+}
+
 
 double round_to_precision(double value, int precision) {
     double factor = std::pow(10.0, precision);
@@ -232,7 +297,7 @@ namespace{
             }else if constexpr (std::is_same_v<T,int64_t> || std::is_same_v<T,uint64_t>){
                 __m256i x_vec = _mm256_loadu_si256(x_data + i);
                 __m256i y_vec = _mm256_loadu_si256(y_data + i);
-                __m256i result_vec = _mm256_setzero_si256();
+                __m256i result_vec = _mm256_setzero_si256(); 
                 if constexpr (op == pairwise_operator::ADD){
                     result_vec = _mm256_add_epi64(x_vec, y_vec);
                 }else if constexpr (op == pairwise_operator::SUB){
@@ -244,7 +309,7 @@ namespace{
             }else if constexpr (std::is_same_v<T,uint32_t> || std::is_same_v<T,int32_t>){
                 __m256i x_vec = _mm256_loadu_si256(x_data + i);
                 __m256i y_vec = _mm256_loadu_si256(y_data + i);
-                __m256i result_vec = _mm256_setzero_si256();
+                __m256i result_vec = _mm256_setzero_si256();         
                 if constexpr (op == pairwise_operator::ADD){
                     result_vec = _mm256_add_epi32(x_vec, y_vec);
                 }else if constexpr (op == pairwise_operator::SUB){
@@ -362,8 +427,8 @@ namespace simd_impl{
     template<typename T>
     std::unique_ptr<std::vector<T>> pairwise_mul(const std::unique_ptr<std::vector<T>>& x_ptr, const std::unique_ptr<std::vector<T>>& y_ptr){
         return std::move(pairwise_op<T,pairwise_operator::MUL>(x_ptr,y_ptr));
-    }
-
+    }    
+    
     template<typename T>
     std::unique_ptr<std::vector<T>> pairwise_div(const std::unique_ptr<std::vector<T>>& x_ptr, const std::unique_ptr<std::vector<T>>& y_ptr){
         return std::move(pairwise_op<T,pairwise_operator::DIV>(x_ptr,y_ptr));
@@ -458,12 +523,12 @@ namespace simd_impl{
 
     template<typename T>
     requires std::is_convertible_v<T,double>
-    double mean(std::unique_ptr<std::vector<T>>& data_ptr) {
+    double mean(const std::unique_ptr<std::vector<T>>& data_ptr) {
         double res = static_cast<double>(sum<T>(data_ptr));
         return res / data_ptr-> size();
     }
 
-    double std(std::unique_ptr<std::vector<double>>& data_ptr, double mean) {
+    double std(const std::unique_ptr<std::vector<double>>& data_ptr, double mean) {
         double result = 0.0;
         size_t i = 0;
         const size_t simd_width = 4;
@@ -478,7 +543,7 @@ namespace simd_impl{
             __m256d square_diff_vec = _mm256_mul_pd(diff_vec, diff_vec);
             sum_vec = _mm256_add_pd(sum_vec, square_diff_vec);
         }
-
+        
         double sum_array[simd_width];
         _mm256_storeu_pd(sum_array, sum_vec);
         for (size_t j = 0; j < simd_width; ++j) {
@@ -516,7 +581,7 @@ namespace simd_impl{
 
             __m256d chunk_xdiff_vec = _mm256_sub_pd(chunk_x_vec, mean_vec_x);
             __m256d chunk_ydiff_vec = _mm256_sub_pd(chunk_y_vec, mean_vec_y);
-
+            
             __m256d square_xdiff_vec = _mm256_mul_pd(chunk_xdiff_vec, chunk_xdiff_vec);
             __m256d square_ydiff_vec = _mm256_mul_pd(chunk_ydiff_vec, chunk_ydiff_vec);
 
@@ -549,7 +614,7 @@ namespace simd_impl{
             var_x += diff_x * diff_x;
             var_y += diff_y * diff_y;
 
-            cov_xy += diff_x * diff_y;
+            cov_xy += diff_x * diff_y; 
         }
         return cov_xy / std::sqrt(var_x * var_y);
     }
@@ -668,13 +733,13 @@ namespace group{
             //check value if existed
             if( iter == res.value_to_index.end() ){
                 //value is not exisited, create a new group
-                group_index++;
+                group_index++;  
                 res.value_to_index.insert({col_ptr->at(i),group_index});
                 res.group_to[i] = group_index;
-
+                
             } else {
                 res.group_to[i] = iter->second;
-            }
+            }   
         }
         res.index_count.resize(group_index + 1 , 0);
         for(auto& to : res.group_to){
@@ -693,19 +758,19 @@ namespace group{
 
         if(sort_method == "descending"){
             std::sort(res.pre_index_to_ordered.begin(), res.pre_index_to_ordered.end(),
-                      [&res](size_t i1, size_t i2) { return res.groups_values[i1] < res.groups_values[i2]; });
+            [&res](size_t i1, size_t i2) { return res.groups_values[i1] < res.groups_values[i2]; });
         }else if(sort_method == "ascending"){
             std::sort(res.pre_index_to_ordered.begin(), res.pre_index_to_ordered.end(),
-                      [&res](size_t i1, size_t i2) { return res.groups_values[i1] > res.groups_values[i2]; });
+            [&res](size_t i1, size_t i2) { return res.groups_values[i1] > res.groups_values[i2]; });
         }else{
             //just keep previous order
         }
 
         res.ordered_index_to_pre.resize(group_index + 1);
         for(int i = 0; i < res.pre_index_to_ordered.size(); i++){
-            res.ordered_index_to_pre[res.pre_index_to_ordered[i]] = i;
+            res.ordered_index_to_pre[res.pre_index_to_ordered[i]] = i; 
         }
-
+        
         return res;
     }
 
@@ -792,7 +857,7 @@ namespace group{
             }
             return std::move(transformed_ptr);
         }
-
+        
         template<typename T1, typename T2>
         std::unique_ptr<std::vector<T2>> first(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
             auto res_ptr = std::make_unique<std::vector<T2>>(partitioned_data.size());
@@ -853,57 +918,57 @@ namespace group{
             return std::move(res_ptr);
         }
 
-        template<typename T>
-        std::unique_ptr<std::vector<T>> sum(Result<T>& res, std::vector<std::unique_ptr<std::vector<T>>>& partitioned_data){
-            auto res_ptr = std::make_unique<std::vector<T>>(partitioned_data.size());
+        template<typename T1, typename T2>
+        std::unique_ptr<std::vector<T2>> sum(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
+            auto res_ptr = std::make_unique<std::vector<T2>>(partitioned_data.size());
             for(int i = 0; i < partitioned_data.size(); i++){
                 res_ptr->at(i) = simd_impl::sum(partitioned_data[res.ordered_index_to_pre[i]]);
             }
             return std::move(res_ptr);
         }
 
-        template<typename T>
-        std::unique_ptr<std::vector<T>> max(Result<T>& res, std::vector<std::unique_ptr<std::vector<T>>>& partitioned_data){
-            auto res_ptr = std::make_unique<std::vector<T>>(partitioned_data.size());
+        template<typename T1, typename T2>
+        std::unique_ptr<std::vector<T2>> max(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
+            auto res_ptr = std::make_unique<std::vector<T2>>(partitioned_data.size());
             for(int i = 0; i < partitioned_data.size(); i++){
                 res_ptr->at(i) = simd_impl::max(partitioned_data[res.ordered_index_to_pre[i]]);
             }
             return std::move(res_ptr);
         }
 
-        template<typename T>
-        std::unique_ptr<std::vector<T>> min(Result<T>& res, std::vector<std::unique_ptr<std::vector<T>>>& partitioned_data){
-            auto res_ptr = std::make_unique<std::vector<T>>(partitioned_data.size());
+        template<typename T1, typename T2>
+        std::unique_ptr<std::vector<T2>> min(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
+            auto res_ptr = std::make_unique<std::vector<T2>>(partitioned_data.size());
             for(int i = 0; i < partitioned_data.size(); i++){
                 res_ptr->at(i) = simd_impl::min(partitioned_data[res.ordered_index_to_pre[i]]);
             }
             return std::move(res_ptr);
         }
-
-        template<typename T>
-        std::unique_ptr<std::vector<T>> first(Result<T>& res, std::vector<std::unique_ptr<std::vector<T>>>& partitioned_data){
-            auto res_ptr = std::make_unique<std::vector<T>>(partitioned_data.size());
+        
+        template<typename T1, typename T2>
+        std::unique_ptr<std::vector<T2>> first(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
+            auto res_ptr = std::make_unique<std::vector<T2>>(partitioned_data.size());
             for(int i = 0; i < partitioned_data.size(); i++){
                 res_ptr->at(i) = partitioned_data[res.ordered_index_to_pre[i]]->front();
             }
             return std::move(res_ptr);
         }
 
-        template<typename T>
-        std::unique_ptr<std::vector<T>> last(Result<T>& res, std::vector<std::unique_ptr<std::vector<T>>>& partitioned_data){
-            auto res_ptr = std::make_unique<std::vector<T>>(partitioned_data.size());
+        template<typename T1, typename T2>
+        std::unique_ptr<std::vector<T2>> last(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
+            auto res_ptr = std::make_unique<std::vector<T2>>(partitioned_data.size());
             for(int i = 0; i < partitioned_data.size(); i++){
                 res_ptr->at(i) = partitioned_data[res.ordered_index_to_pre[i]]->back();
             }
             return std::move(res_ptr);
         }
 
-        template<typename T>
-        requires std::is_convertible_v<T,double>
-        std::unique_ptr<std::vector<double>> mean(Result<T>& res, std::vector<std::unique_ptr<std::vector<T>>>& partitioned_data){
+        template<typename T1, typename T2>
+        requires std::is_convertible_v<T2,double>
+        std::unique_ptr<std::vector<double>> mean(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
             auto res_ptr = std::make_unique<std::vector<double>>(partitioned_data.size());
             for(int i = 0; i < partitioned_data.size(); i++){
-                res_ptr->at(i) = simd_impl::mean<T>(partitioned_data[res.ordered_index_to_pre[i]]);
+                res_ptr->at(i) = simd_impl::mean<T2>(partitioned_data[res.ordered_index_to_pre[i]]);
             }
             return std::move(res_ptr);
         }
@@ -930,7 +995,7 @@ namespace group{
     //         }else if constexpr (F_type == Function::QUANTILE){
 
     //         }
-    //     }
+    //     } 
     //     return nullptr;
     // }
 }
@@ -980,9 +1045,9 @@ T sumVector(const std::vector<T>& nums, int start, int end) {
         return res_ptr;
     } else {
         int mid = (start + end) / 2;
-        T leftSum = sumVector(nums, start, mid);
-        T rightSum = sumVector(nums, mid + 1, end);
-        return simd_impl::pairwise_add(leftSum , rightSum);
+        T leftSum = sumVector(nums, start, mid);  
+        T rightSum = sumVector(nums, mid + 1, end); 
+        return simd_impl::pairwise_add(leftSum , rightSum);  
     }
 }
 

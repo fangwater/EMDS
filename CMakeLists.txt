@@ -5,8 +5,8 @@ SET(CMAKE_TOOLCHAIN_FILE "/home/fanghaizhou/lib/vcpkg/scripts/buildsystems/vcpkg
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx")
 project(EMDS)
 set(CMAKE_CXX_STANDARD 20)
-SET(CMAKE_BUILD_TYPE "Debug")
-# SET(CMAKE_BUILD_TYPE "Release")
+# SET(CMAKE_BUILD_TYPE "Debug")
+SET(CMAKE_BUILD_TYPE "Release")
 include_directories(SYSTEM "/home/fanghaizhou/lib/vcpkg/installed/x64-linux/include")
 find_package(Threads REQUIRED)
 find_package(absl CONFIG REQUIRED)
@@ -18,6 +18,7 @@ find_package(folly CONFIG REQUIRED)
 find_package(xsimd CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+find_package(TBB CONFIG REQUIRED)
 
 set(absl_LIBRARIES
 absl::algorithm
@@ -40,12 +41,6 @@ absl::config
 absl::base
 absl::flags_parse
 absl::utility)
-
-find_package(OpenMP)
-if(OPENMP_FOUND)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/src/cache_layer)
 include_directories(${CMAKE_SOURCE_DIR}/src/collect_layer)
@@ -72,5 +67,6 @@ target_link_libraries(emds xsimd)
 target_link_libraries(emds cppzmq cppzmq-static)
 target_link_libraries(emds nlohmann_json::nlohmann_json)
 target_link_libraries(emds spdlog::spdlog)
+target_link_libraries(emds TBB::tbb TBB::tbbmalloc)
 
 

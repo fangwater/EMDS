@@ -21,9 +21,8 @@ def process_data(path,date_str):
         return
 
     date = pd.to_datetime(date_str)
-    
     try:
-        hfq_multi_daily = pd.read_parquet(path).reindex(index=[date]).fillna(method='ffill').replace(0,np.nan)
+        hfq_multi_daily = pd.read_parquet(path).reindex(index=[date]).fillna(method='ffill').replace(np.nan,0)
     except KeyError:
         print(f"The date {date_str} is not present in the data!")
         return

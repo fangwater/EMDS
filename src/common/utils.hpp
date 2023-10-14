@@ -168,4 +168,23 @@ void clear_bits(uint8_t* ptr, size_t k) {
     *ptr &= ~mask;
 }
 
+bool is_dual_NUMA() {
+    const std::string basePath = "/sys/devices/system/node/";
+    int nodeCount = 0;
+
+    // Check if the directory exists before trying to iterate over it
+    if (!std::filesystem::exists(basePath)) {
+        return false;
+    }
+
+    for (const auto &entry : std::filesystem::directory_iterator(basePath)) {
+        if (entry.is_directory() && entry.path().filename().string().find("node") != std::string::npos) {
+            nodeCount++;
+        }
+    }
+
+    return nodeCount > 1;
+}
+
+
 #endif //UTILS_HPP

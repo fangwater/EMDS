@@ -1,18 +1,18 @@
 #ifndef CONTRACT_COLLECTOR_HPP
 #define CONTRACT_COLLECTOR_HPP
 #include <memory>
-#include <omp.h>
-#include "../cache_layer/contract_buffer.hpp"
-#include "../common/info.hpp"
 #include <thread>
 #include <absl/time/civil_time.h>
 #include <absl/time/time.h>
+#include <tbb/tbb.h>
+#include <tbb/task_arena.h>
+#include "../cache_layer/contract_buffer.hpp"
+#include "../common/info.hpp"
 #include "../common/time_utils.hpp"
 #include "../common/fmt_expand.hpp"
 #include "../common/utils.hpp"
 #include "../common/config_type.hpp"
 #include "../aggregate_layer/period_result.hpp"
-#include "../compute_lib/candle_stick.hpp"
 #include "../common/callback_factory.hpp"
 #include "../aggregate_layer/period_result.hpp"
 #include "../aggregate_layer/aggregator_manager.hpp"
@@ -22,13 +22,19 @@ template<typename T>
 class PeriodContext{
 public:
     int period;
-    PackedInfoSp<T> accumulated_info;
+    /*each contract has itself accumulated_info for target unique period, manager here*/
+    std::vector<PackedInfoSp<T>> accumulated_infos;
     std::vector<CallBackObjPtr<T>> callbacks;
     std::vector<std::string> callback_names;
     explicit PeriodContext(int period_of_context):period(period_of_context){};
-    std::size_t append_infos(PackedInfoSp<T> src){
-        accumulated_info->reserve(accumulated_info->size() + src->size());
-        std::copy(src->begin(), src->end(), std::back_inserter(*accumulated_info));
+    std::size_t append_infos(PackedInfoSp<T> src, int index){
+        auto& accumulated_info = accumulated_infos[index];
+        if(!src->size()){
+            return accumulated_info->size();
+        }else{
+            accumulated_info->reserve(accumulated_info->size() + src->size());
+            std::copy(src->begin(), src->end(), std::back_inserter(*accumulated_info));
+        }
         return accumulated_info->size();
     }
 };
@@ -133,8 +139,20 @@ template<typename T, EXCHANGE EX>
 void ContractPeriodComputer<T,EX>::init_per_period_ctx() {
     if constexpr (std::is_same_v<T, TradeInfo>){
         PeriodCtxConfig trade_ctx_config(CtxType::TRADE);
+        int contract_size = [](){
+            ClosePrice close_price;
+            close_price.init();
+            if constexpr (EX == EXCHANGE::SH){
+                return close_price.sh.size();
+            }else if constexpr (EX == EXCHANGE::SZ){
+                return close_price.sz.size();
+            }else{
+                throw std::runtime_error("Unexpected EXCHANGE Type");
+            }
+        }();
         trade_ctx_config.init();
         for(int i = 0; i < trade_ctx_config.unique_periods.size(); i++){
+            /*需要知道合约个数*/
             PeriodContext<TradeInfo> period_ctx(trade_ctx_config.unique_periods.at(i));
             period_ctx.callback_names = trade_ctx_config.per_period_feature_name_list.at(i);
             for(auto& cb_name : period_ctx.callback_names){
@@ -142,10 +160,10 @@ void ContractPeriodComputer<T,EX>::init_per_period_ctx() {
                 auto callback_obj_ptr = factory.create_trade_function_callback<EX>(cb_name);
                 period_ctx.callbacks.push_back(std::move(callback_obj_ptr));
             }
-            period_ctx.accumulated_info = [](){
-                std::vector<std::shared_ptr<TradeInfo>> vec;
-                return std::make_shared<std::vector<std::shared_ptr<TradeInfo>>>(std::move(vec));
-            }();
+            for(int i = 0; i < contract_size; i++){
+                auto ptr = std::make_shared<std::vector<std::shared_ptr<TradeInfo>>>();
+                period_ctx.accumulated_infos.push_back(std::move(ptr));
+            }
             per_period_ctx.push_back(std::move(period_ctx));
         }
         update_trade_period_call_config();
@@ -161,9 +179,9 @@ void ContractPeriodComputer<T,EX>::init_per_period_ctx() {
 }
 
 template<typename T, EXCHANGE EX>
-void ContractPeriodComputer<T,EX>::process_minimum_period_info(PackedInfoSp<T> minimum_period_info, int32_t i, int64_t rec_count) {
+void ContractPeriodComputer<T,EX>::process_minimum_period_info(PackedInfoSp<T> minimum_period_info, int i, const int64_t rec_count) {
     for(PeriodContext<T>& period_ctx : per_period_ctx){
-        period_ctx.append_infos(minimum_period_info);
+        period_ctx.append_infos(minimum_period_info,i);
         if(!(rec_count % period_ctx.period)){
             //收集此周期所注册feature函数的计算结果
             std::vector<std::vector<double>> callback_results;
@@ -179,7 +197,7 @@ void ContractPeriodComputer<T,EX>::process_minimum_period_info(PackedInfoSp<T> m
             };
             aggregator->commit(std::move(period_res));
             //释放当前period的数据
-            period_ctx.accumulated_info->clear();
+            period_ctx.accumulated_infos[i]->clear();
         }
     }
 }
@@ -197,6 +215,8 @@ public:
     absl::Time last_update_time;
     absl::CivilDay today;
     int64_t rec_count;
+    std::unique_ptr<tbb::task_arena> node_arena;
+    int scale_rate;
 public:
     ContractBufferMapCollector();
 public:
@@ -243,6 +263,22 @@ void ContractBufferMapCollector<T,EX>::init() {
         json config = open_json_file("config/system.json");
         this->latency = config["system"]["collect_latency(ms)"];
         this->active_threads = config["system"]["active_threads"];
+        this->scale_rate = config["system"]["scale_rate"];
+        if(is_dual_NUMA()) {
+            DLOG(INFO) << "Dual NUMA architecture detected.";
+            if constexpr (EX == EXCHANGE::SH){
+                //might work, but not promise
+                node_arena = std::make_unique<tbb::task_arena>(active_threads, 0);
+            }else if constexpr (EX == EXCHANGE::SZ){
+                node_arena = std::make_unique<tbb::task_arena>(active_threads, 1);
+            }else{
+                throw std::runtime_error("Unknown type when partiation");
+            }
+        }else{
+            DLOG(INFO) << "Single CPU or non-NUMA architecture detected.";
+            int threads = tbb::info::default_concurrency();
+            node_arena = std::make_unique<tbb::task_arena>(active_threads, 0);
+        }
         this->min_period = config["system"]["min_period"];
         this->last_update_time = [&config,this](){
             //当日日期需要直接指定，因为无法判断hfq_table中，最后一天之后多久是下一个交易日，节假日的维护不稳定
@@ -261,8 +297,10 @@ void ContractBufferMapCollector<T,EX>::init() {
         SecurityId security_id_config;
         security_id_config.init();
         if constexpr (EX == EXCHANGE::SH){
+            DLOG(INFO) << fmt::format("{} ----> size {}",str_type_ex<TradeInfo,EX>(),security_id_config.sh.size());
             return security_id_config.sh;
         }else if constexpr (EX == EXCHANGE::SZ){
+            DLOG(INFO) << fmt::format("{} ----> size {}",str_type_ex<TradeInfo,EX>(),security_id_config.sz.size());
             return security_id_config.sz;
         }else{
             throw std::runtime_error("Invalid exchange type");
@@ -287,7 +325,7 @@ int ContractBufferMapCollector<T,EX>::signal_handler(absl::Time tp) {
     std::lock_guard<std::mutex> sig_mtx(mtx);
     //TODO：等待时间
     //DEBUG
-    std::this_thread::sleep_for(std::chrono::milliseconds(min_period/60 + latency));
+    std::this_thread::sleep_for(std::chrono::milliseconds(min_period/scale_rate + latency));
     //std::this_thread::sleep_for(std::chrono::milliseconds(latency));
     //TODO：修改为能兼容对齐取整模式
     absl::CivilMinute truncated_civil = absl::ToCivilMinute(tp,sh_tz.tz);
@@ -299,12 +337,32 @@ int ContractBufferMapCollector<T,EX>::signal_handler(absl::Time tp) {
 template<typename T, EXCHANGE EX>
 int ContractBufferMapCollector<T,EX>::run_collect(absl::Time threshold_tp) {
     rec_count++;
-    //omp_set_num_threads(active_threads);
-    //#pragma omp parallel for default(none) shared(security_ids, contract_period_computer, threshold_tp, rec_count)
-    for(int i = 0; i < security_ids.size(); i++){
+    //parallel version
+    node_arena->execute([&]{
+        tbb::parallel_for(size_t(0), security_ids.size(), [&](size_t i) {
         auto this_period_info = collect_info_by_id(security_ids[i], threshold_tp);
         contract_period_computer->process_minimum_period_info(this_period_info,i,rec_count);
-    }
+        });
+    });
+    // int x = contract_period_computer->per_period_ctx.front().accumulated_infos.size();
+    // DLOG(INFO) << fmt::format("{} \n contract_size {}",str_type_ex<TradeInfo,EX>(),x);
+    // DLOG(INFO) << fmt::format("ids {}",security_ids.size());
+    // for(int i = 0; i < security_ids.size(); i++){
+    //     auto this_period_info = collect_info_by_id(security_ids[i], threshold_tp);
+    //     if(this_period_info->size() != 0){
+    //         std::cout << fmt::format("{} index {} has ele {}",str_type_ex<TradeInfo,EX>(),i,this_period_info->size())<<std::endl;
+    //         contract_period_computer->process_minimum_period_info(this_period_info,i,rec_count);
+    //     }
+    //     // contract_period_computer->process_minimum_period_info(this_period_info,i,rec_count);
+    // }
+    // tbb::parallel_for(size_t(0), security_ids.size(), [&](size_t i) {
+    //     auto this_period_info = collect_info_by_id(security_ids[i], threshold_tp);
+    //     contract_period_computer->process_minimum_period_info(this_period_info,i,rec_count);
+    // });
+    // for(int i = 0; i < security_ids.size(); i++){
+    //     auto this_period_info = collect_info_by_id(security_ids[i], threshold_tp);
+    //     contract_period_computer->process_minimum_period_info(this_period_info,i,rec_count);
+    // }
     int64_t index_tp = absl::ToUnixMicros(threshold_tp);
     contract_period_computer->aggregator_notify(rec_count,index_tp);
     return 0;

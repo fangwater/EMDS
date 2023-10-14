@@ -17,7 +17,7 @@ public:
     explicit CandleStick(std::vector<double>& closeprices){
         previous_close_price = closeprices;
     }
-    std::vector<double> calculate(const PackedInfoSp<TradeInfo>& tick_buffer_sp,int security_id_index) override;
+    virtual std::vector<double> calculate(const PackedInfoSp<TradeInfo>& tick_buffer_sp,int security_id_index) override;
 };
 
 std::vector<double> CandleStick::calculate(const PackedInfoSp<TradeInfo>& tick_buffer_sp,int security_id_index){
@@ -49,6 +49,10 @@ std::vector<double> CandleStick::calculate(const PackedInfoSp<TradeInfo>& tick_b
                 aa_S_tradv->emplace_back(ticker_sp->TradVolume);
             }
         }
+    }
+    if(aa_tradp->size() == 0){
+        double inheritance_price = previous_close_price[security_id_index];
+        return std::vector<double>{0,0,0,0,0,0,0,0,0,0,0,inheritance_price,inheritance_price};
     }
     auto cjb = static_cast<double>(aa_tradp->size());
     auto bcjb = static_cast<double>(aa_B_tradp->size());

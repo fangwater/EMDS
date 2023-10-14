@@ -28,6 +28,8 @@ public:
             int64_t OfferApplSeqNum;
             CHECK_RETURN_VALUE(absl::SimpleAtoi(x[3],&BidApplSeqNum),"Failed to convert BidApplSeqNum");
             CHECK_RETURN_VALUE(absl::SimpleAtoi(x[4],&OfferApplSeqNum),"Failed to convert OfferApplSeqNum");
+            ticker_info_sp->BidApplSeqNum = BidApplSeqNum;
+            ticker_info_sp->OfferApplSeqNum = OfferApplSeqNum;
             ticker_info_sp->B_or_S = (BidApplSeqNum > OfferApplSeqNum) ? 1 : -1;
             InfoCache_ptr->put_info(ticker_info_sp);
         }
@@ -52,7 +54,13 @@ public:
             CHECK_RETURN_VALUE(absl::SimpleAtod(x[5],&TickInfo_sp->TradPrice),"Failed to convert TradPrice");
             CHECK_RETURN_VALUE(absl::SimpleAtod(x[6], &TickInfo_sp->TradVolume),"Failed to convert TradVolume");
             TickInfo_sp->TradTime = InfoCache_ptr->today_start + bias;
-            TickInfo_sp->B_or_S = (x[10] == "B") ? 1 : -1;
+            int64_t BidApplSeqNum;
+            int64_t OfferApplSeqNum;
+            CHECK_RETURN_VALUE(absl::SimpleAtoi(x[8],&BidApplSeqNum),"Failed to convert BidApplSeqNum");
+            CHECK_RETURN_VALUE(absl::SimpleAtoi(x[9],&OfferApplSeqNum),"Failed to convert OfferApplSeqNum");
+            TickInfo_sp->BidApplSeqNum = BidApplSeqNum;
+            TickInfo_sp->OfferApplSeqNum = OfferApplSeqNum;
+            TickInfo_sp->B_or_S = (BidApplSeqNum > OfferApplSeqNum) ? 1 : -1;
             InfoCache_ptr->put_info(TickInfo_sp);
         }
     }

@@ -1,0 +1,27 @@
+{
+  "debug_trade":["amount","count","term_count"],
+  "candle_stick":["cjb", "bcjb", "scjb",
+    "volume_nfq","bvolume_nfq","svolume_nfq",
+    "amount","bamount","samount","lowprice_nfq",
+    "highprice_nfq","openprice_nfq","closeprice_nfq"],
+  "order_flow_min":[
+    "Sv", "Scjbs", "Bv", "Bcjbs", "tradv", "cjbs", "Samt", "Bamt", "tradamt", "CumTradv",
+    "CumCjbs", "CumTradamt", "Delta", "cjbsDelta", "MaxDeltaStrength", "cjbsMaxDeltaStrength", 
+    "MinDeltaStrength", "cjbsMinDeltaStrength", "DeltaStrength_MinMaxRatio", "cjbsDeltaStrength_MinMaxRatio", 
+    "CumDelta", "CumCjbsDelta", "DeltaStrength", "cjbsDeltaStrength", "CumDeltaStrength", 
+    "CumCjbsDeltaStrength", "DeltaStrength_avg", "cjbsDeltaStrength_avg", "SD_ratio_avg", 
+    "SDcjbs_ratio_avg", "SD_ratio_max", "SDcjbs_ratio_max", "SD_ratio_min", "SDcjbs_ratio_min", "SD_ratio", 
+    "SDcjbs_ratio", "S_equilibrium_P", "Scjbs_equilibrium_P", "D_equilibrium_P", "Dcjbs_equilibrium_P", 
+    "S_equilibrium", "Scjbs_equilibrium", "D_equilibrium", "Dcjbs_equilibrium", "S_equilibrium_ratio", 
+    "Scjbs_equilibrium_ratio", "D_equilibrium_ratio", "Dcjbs_equilibrium_ratio", "S_equilibrium_count", 
+    "Scjbs_equilibrium_count", "D_equilibrium_count", "Dcjbs_equilibrium_count", "POC", "cjbsPOC", 
+    "SPOC", "ScjbsPOC", "BPOC", "BcjbsPOC", "Svwap", "Bvwap", "S_orderDecay", "Scjbs_orderDecay", 
+    "D_orderDecay", "Dcjbs_orderDecay", "S_decaySlope", "Scjbs_decaySlope", "D_decaySlope", "Dcjbs_decaySlope"
+  ],
+  "trade_amount":[
+    "ultraBuyAmt", "ultraSellAmt", "ultraOrderchg", 
+    "bigBuyAmt", "bigSellAmt", "bigOrderchg",
+    "ultrabigOrderchg", "midBuyAmt", "midSellAmt", 
+    "midOrderchg", "smallBuyAmt", "smallSellAmt", "smallOrderchg"
+  ]
+}

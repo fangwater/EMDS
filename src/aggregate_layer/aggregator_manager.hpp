@@ -165,8 +165,6 @@ int AggregatorManager::period_finish(int period, int64_t tp){
         iter->second++;
         if(iter->second > 2){
             LOG(WARNING) << "Consecutive first calls to period_finish without a second call!";
-        }else{
-            DLOG(INFO) << "Correct!";
         }
         //第二次插入这个key, 正确
         finish_map.erase(iter);
@@ -183,10 +181,10 @@ int AggregatorManager::period_finish(int period, int64_t tp){
                     std::filesystem::create_directories(folder_dir);
                 }
                 std::string path = fmt::format("{}/{}.parquet",folder_dir,format_tp_to_string(tp));
-                aggregator->dump(path);
-                // (void)std::async(std::launch::async, [&aggregator,dump_path = std::move(path)](){
-                //     aggregator->dump(dump_path);
-                // });
+                // aggregator->dump(path);
+                (void)std::async(std::launch::async, [&aggregator,dump_path = std::move(path)](){
+                    aggregator->dump(dump_path);
+                });
             }
         }
     }

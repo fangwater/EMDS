@@ -28,6 +28,8 @@ struct TradeInfo{
     absl::Time TradTime;
     double TradPrice;
     double TradVolume;
+    int64_t BidApplSeqNum;
+    int64_t OfferApplSeqNum;
 }__attribute__ ((aligned(8)));
 
 struct OrderInfo{

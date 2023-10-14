@@ -52,13 +52,16 @@ public:
             } else if constexpr (EX == EXCHANGE::SZ) {
                 return 11;
             }
-        } else if constexpr (std::is_same_v<T, DepthInfo>) {
+        }
+        //TODO 
+        else if constexpr (std::is_same_v<T, DepthInfo>) {
             if constexpr (EX == EXCHANGE::SH) {
                 return 0;
             } else if constexpr (EX == EXCHANGE::SZ) {
                 return 0;
             }
-        } else if constexpr (std::is_same_v<T, OrderInfo>) {
+        }
+        else if constexpr (std::is_same_v<T, OrderInfo>) {
             if constexpr (EX == EXCHANGE::SH) {
                 return 0;
             } else if constexpr (EX == EXCHANGE::SZ) {
