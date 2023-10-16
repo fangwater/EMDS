@@ -15,6 +15,7 @@ struct ShanghaiTimeZone {
 
 std::string get_current_time_as_string() {
     auto now = std::chrono::system_clock::now();
+    now += std::chrono::hours(8);// 为东八区增加8小时的偏移
     return fmt::format("{:%Y-%m-%d %H:%M:%S}", now);
 }
 

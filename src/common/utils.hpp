@@ -13,6 +13,12 @@
 #include <iostream>
 #include <fstream>
 #include <numeric>
+#include <thread>
+#include <chrono>
+#include <unistd.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include "info.hpp"
 
 using json = nlohmann::json;
@@ -23,6 +29,18 @@ inline void CHECK_RETURN_VALUE(bool res, std::string error_msg){
     }
     return;
 }
+
+std::string get_host_ip(){
+    char hostbuffer[256];
+    gethostname(hostbuffer, sizeof(hostbuffer));
+    struct hostent *host_entry = gethostbyname(hostbuffer);
+    if (host_entry == NULL) {
+        throw std::runtime_error(fmt::format("Failed to get host entry for {}",hostbuffer));
+    }
+    char *IPbuffer = inet_ntoa(*((struct in_addr*) host_entry->h_addr_list[0]));
+    return std::string(IPbuffer);
+}
+
 
 inline std::string absl_time_to_str(absl::Time now){
     std::string time_str = absl::FormatTime("%m-%d %H:%M:%S.%f", now, absl::LocalTimeZone());

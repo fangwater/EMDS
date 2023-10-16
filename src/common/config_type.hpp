@@ -20,6 +20,8 @@ public:
     int active_threads;
     int64_t contract_buffer_size;
     int64_t cache_size;
+    int scale_rate;
+    int port_begin;
     void init(){
         json config = open_json_file("config/system.json");
         //获取当天的日期，后续操作依赖于这个函数
@@ -37,6 +39,8 @@ public:
         active_threads = config["system"]["active_threads"];
         contract_buffer_size = config["system"]["contract_buffer_size"];
         cache_size = config["system"]["cache_size"];
+        port_begin = config["system"]["port_begin"];
+        scale_rate = config["system"]["scale_rate"];
     }
 };
 

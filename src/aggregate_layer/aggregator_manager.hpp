@@ -19,6 +19,10 @@ public:
     int period_finish(int period, int64_t tp);
     explicit AggregatorManager(std::string dump_path);
     AggregatorManager():need_dump_file(false){};
+    ~AggregatorManager() {
+        std::cout <<"Destructing AggregatorManager..." << std::endl;
+        std::cout <<"AggregatorManager destructed."<< std::endl;
+    }
     int init(std::string path_to_config_folder, std::string manager_type);
 };
 
@@ -66,7 +70,7 @@ int AggregatorManager::init(std::string path_to_config_folder, std::string manag
             bind_ports.push_back(item["port"].get<std::vector<int>>());
         }
 
-        std::string ip = period_call_json["ip"];
+        std::string ip = get_host_ip();
         std::vector<std::vector<std::string>> called_addrs;
         for( int i = 0; i < bind_ports.size(); i++){
             std::vector<std::string> addrs;
@@ -110,6 +114,7 @@ AggregatorManager::AggregatorManager(std::string dump_path){
         LOG(WARNING) << fmt::format("Aggregators dump_dir is exist");
     } else {
         fs::create_directory(dump_dir);
+        LOG(INFO) << fmt::format("Create dump_dir is success");
     } 
     need_dump_file = true;
 }
@@ -165,6 +170,8 @@ int AggregatorManager::period_finish(int period, int64_t tp){
         iter->second++;
         if(iter->second > 2){
             LOG(WARNING) << "Consecutive first calls to period_finish without a second call!";
+        }else{
+            DLOG(INFO) << "Correct!";
         }
         //第二次插入这个key, 正确
         finish_map.erase(iter);
@@ -181,10 +188,10 @@ int AggregatorManager::period_finish(int period, int64_t tp){
                     std::filesystem::create_directories(folder_dir);
                 }
                 std::string path = fmt::format("{}/{}.parquet",folder_dir,format_tp_to_string(tp));
-                // aggregator->dump(path);
-                (void)std::async(std::launch::async, [&aggregator,dump_path = std::move(path)](){
-                    aggregator->dump(dump_path);
-                });
+                aggregator->dump(path);
+                // (void)std::async(std::launch::async, [&aggregator,dump_path = std::move(path)](){
+                //     aggregator->dump(dump_path);
+                // });
             }
         }
     }

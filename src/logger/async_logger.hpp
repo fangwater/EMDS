@@ -53,6 +53,16 @@ public:
     LoggerManager(): factory(8192){
         default_level = spdlog::level::level_enum::info;
     }
+    ~LoggerManager() {
+        LOG(INFO) << "LoggerManager destructing..."; 
+        for (const auto& pair : loggers) {
+            pair.second->flush();
+        }
+        if (self_logger) {
+            self_logger->flush();
+        }
+        LOG(INFO) << "LoggerManager destructed."; 
+    }
     void add_self_logger(){
         self_logger = add_logger("LoggerManager");
     }

@@ -1,8 +1,7 @@
 {
     "depth": [],
-    "ip": "172.16.30.36",
+    "ip": "",
     "order": [],
-    "port_begin": 10086,
     "trade": [
         {
             "called_func": [

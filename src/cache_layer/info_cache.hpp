@@ -29,6 +29,16 @@ public:
         info_queue_ptr = std::make_unique<folly::MPMCPipeline<std::shared_ptr<T>>>(queue_size);
         today_start = absl::FromCivil(today, sh_tz.tz);
     }
+    ~InfoCache(){
+        LOG(INFO) << fmt::format("Destructing InfoCache_{}...",str_type_ex<T,EX>());
+        // Request threads to stop
+        for (auto& t : buffer_submitter){
+            if (t.joinable()) {
+                t.request_stop();
+            }
+        }
+        LOG(INFO) << fmt::format("InfoCache_{} destructed.",str_type_ex<T,EX>());
+    }
     void register_logger(const std::shared_ptr<LoggerManager>& logger_manager){
         logger = logger_manager->get_logger(fmt::format("InfoCache_{}", str_type_ex<T,EX>()));
     }
@@ -82,10 +92,5 @@ public:
         }
     };
     virtual void init_message_parser() = 0;
-    ~InfoCache(){
-        for(auto& thread : buffer_submitter){
-            thread.request_stop();
-        }
-    }
 };
 #endif //INFO_CACHE_HPP

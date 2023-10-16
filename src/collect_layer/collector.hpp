@@ -89,10 +89,15 @@ void ContractPeriodComputer<T,EX>::update_trade_period_call_config() {
     if (config.find("trade") == config.end()) {
         throw std::runtime_error("The 'trade' field is not found in the config file.");
     }
+    config["ip"] = get_host_ip();
     //清空旧的数据，重新加入注册
     config["trade"] = json::array();
     //发布源的最低端口号，递增使用
-    int port_begin = config["port_begin"];
+    int port_begin = [](){
+        SystemParam system_param;
+        system_param.init();
+        return system_param.port_begin;
+    }();
     for(int i = 0; i < per_period_ctx.size(); i++){
         auto& period_context = per_period_ctx.at(i);
         json entry = json::object();
@@ -260,14 +265,15 @@ void ContractBufferMapCollector<T,EX>::init() {
     //int32_t active_threads;
     //absl::Time last_update_time;
     [this](){
+        SystemParam system_param;
+        system_param.init();
         json config = open_json_file("config/system.json");
-        this->latency = config["system"]["collect_latency(ms)"];
-        this->active_threads = config["system"]["active_threads"];
-        this->scale_rate = config["system"]["scale_rate"];
+        this->latency = system_param.collect_latency_ms;
+        this->active_threads = system_param.active_threads;
+        this->scale_rate = system_param.scale_rate;
         if(is_dual_NUMA()) {
             DLOG(INFO) << "Dual NUMA architecture detected.";
             if constexpr (EX == EXCHANGE::SH){
-                //might work, but not promise
                 node_arena = std::make_unique<tbb::task_arena>(active_threads, 0);
             }else if constexpr (EX == EXCHANGE::SZ){
                 node_arena = std::make_unique<tbb::task_arena>(active_threads, 1);
@@ -288,7 +294,7 @@ void ContractBufferMapCollector<T,EX>::init() {
             }
             absl::Duration continuous_trading_begin = absl::Hours(9) + absl::Minutes(30);
             absl::Time today_start = absl::FromCivil(today,sh_tz.tz);
-            return today_start + continuous_trading_begin - absl::Milliseconds(min_period);
+            return today_start + continuous_trading_begin;
         }();
     }();
 
@@ -363,7 +369,7 @@ int ContractBufferMapCollector<T,EX>::run_collect(absl::Time threshold_tp) {
     //     auto this_period_info = collect_info_by_id(security_ids[i], threshold_tp);
     //     contract_period_computer->process_minimum_period_info(this_period_info,i,rec_count);
     // }
-    int64_t index_tp = absl::ToUnixMicros(threshold_tp);
+    int64_t index_tp = absl::ToUnixMicros(threshold_tp + absl::Hours(8));
     contract_period_computer->aggregator_notify(rec_count,index_tp);
     return 0;
 }

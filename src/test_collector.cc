@@ -3,9 +3,14 @@
 #include "cache_layer/info_cache_manager.hpp"
 #include "logger/async_logger.hpp"
 #include <csignal>
+#include <cstdlib>
 #include "collect_layer/trade_collector.hpp"
 //单元测试
 std::atomic<bool> run_loop(true);
+void EMDS_FINISH() {
+    std::cout << "ALL log flushed, Exit EMDS" << std::endl;
+}
+
 void test_PeriodCtxConfig() {
     std::ostringstream oss;
 
@@ -130,9 +135,11 @@ void test_CollectLayer(){
     aggregator_manager_sp->init("config","trade");
     while(run_loop){
         std::this_thread::sleep_for(std::chrono::seconds(1));
-        std::cout << "running...... \n";
+        fmt::print("EMDS running...... Current time: {}\n", get_current_time_as_string());
     }
-    std::cout << "finish \n";
+    aggregator_manager_sp.reset();
+    logger_manager_sp.reset();
+    std::quick_exit(0);
 }
 
 void test_logger(){
@@ -145,7 +152,8 @@ void test_logger(){
 }
 int main()
 {
-    //signal(SIGINT, signalHandler);
+    signal(SIGINT, signalHandler);
+    std::at_quick_exit(EMDS_FINISH);
     test_CollectLayer();
     return 0;
 }

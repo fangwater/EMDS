@@ -10,6 +10,20 @@ public:
     std::jthread sz_jthread;
 public:
     explicit TradeCollectorManager(const std::shared_ptr<AggregatorManager>& aggregator_sp):CollectorManager<TradeInfo>(aggregator_sp){};
+    ~TradeCollectorManager(){
+        logger->info("Destructing TradeCollectorManager...");
+        LOG(INFO) << "Destructing TradeCollectorManager...";
+        // Request threads to stop
+        if (sh_jthread.joinable()) {
+            sh_jthread.request_stop();
+        }
+
+        if (sz_jthread.joinable()) {
+            sz_jthread.request_stop();
+        }
+        logger->info("TradeCollectorManager destructed.");
+        LOG(INFO) << "TradeCollectorManager destructed.";
+    }
     void init (const std::shared_ptr<LoggerManager>& logger_manager) override;
     void start_sig_sender(){
         sh_jthread = std::jthread(&PeriodSignalGenerator<TradeInfo,EXCHANGE::SH>::minimal_period_signal_generator, &sh_sig_sender);

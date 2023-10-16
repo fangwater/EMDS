@@ -26,6 +26,18 @@ private:
         });
     }
 public:
+    ~TradeInfoCacheManager() {
+        logger->info("Destructing TradeInfoCacheManager...");
+        LOG(INFO) << "Destructing TradeInfoCacheManager..."; 
+        for (auto& t : receivers) {
+            if (t.joinable()) {
+                t.request_stop();
+            }
+        }
+        logger->info("TradeInfoCacheManager destructed.");
+        LOG(INFO) << "TradeInfoCacheManager destructed."; 
+    }
+
     void run_deliver_threads(int k){
         sz_trade_info_cache->init_submit_threads(k);
         sh_trade_info_cache->init_submit_threads(k);
