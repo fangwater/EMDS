@@ -1,22 +1,35 @@
 {
-  "ip":"172.16.30.36",
-  "trade":[
-    {
-      "period":1,
-      "called_func":["test1","test2"],
-      "port":[20010,20011]
-    },
-    {
-      "period":3,
-      "called_func":["test1"],
-      "port":[20020]
-    }
-  ],
-  "order":[
-    {
-
-    }
-  ],
-  "depth":[]
+    "depth": [],
+    "ip": "172.16.30.36",
+    "order": [],
+    "port_begin": 10086,
+    "trade": [
+        {
+            "called_func": [
+                "trade_amount"
+            ],
+            "period": 1,
+            "port": [
+                10086
+            ]
+        },
+        {
+            "called_func": [
+                "trade_amount"
+            ],
+            "period": 3,
+            "port": [
+                10087
+            ]
+        },
+        {
+            "called_func": [
+                "trade_amount"
+            ],
+            "period": 5,
+            "port": [
+                10088
+            ]
+        }
+    ]
 }
-
