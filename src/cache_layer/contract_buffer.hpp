@@ -83,11 +83,14 @@ public:
     }
     bool insert(std::shared_ptr<T> info){
         auto iter = security_id_to_contract_buffer_map.find(info->SecurityID);
-        if(iter == security_id_to_contract_buffer_map.end()){
-            throw std::runtime_error("security_id is not included in the securiy_id_to_contract_buffer_map");
-        }else{
+        if(iter != security_id_to_contract_buffer_map.end()){
             iter->second.append_info(info);
             return true;
+        }else{
+            //不应该要求跟踪全部股票，不存在的忽略即可
+            //throw std::runtime_error("security_id is not included in the securiy_id_to_contract_buffer_map");
+            LOG(INFO) << "security_id is not included in the securiy_id_to_contract_buffer_map";
+            return false;
         }
     }
 };
