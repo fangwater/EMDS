@@ -13,7 +13,7 @@ private:
     static CallBackObjPtr<TradeInfo> create_debug_trade_function(int index_count);
     static CallBackObjPtr<TradeInfo> create_candle_stick_callback(std::vector<double>& closeprices);
     //DOLLAR,STD,QUANTILE
-    static CallBackObjPtr<TradeInfo> create_trade_amount_callback(TradeAmount::ThresholdType type);
+    static CallBackObjPtr<TradeInfo> create_trade_amount_callback(TradeAmount::ThresholdType type,int index_count);
     //NONE,BIG,SMALL
     static CallBackObjPtr<TradeInfo> create_order_flow_min_callback(OrderFlowMin::OrderType type,int index_count);
 public:
@@ -21,8 +21,8 @@ public:
     static CallBackObjPtr<TradeInfo> create_trade_function_callback(const std::string& name);
 };
 
-CallBackObjPtr<TradeInfo> CallBackObjFactory::create_trade_amount_callback(TradeAmount::ThresholdType type){
-    auto trade_amount_callback_ptr = std::make_unique<TradeAmount>(type);
+CallBackObjPtr<TradeInfo> CallBackObjFactory::create_trade_amount_callback(TradeAmount::ThresholdType type,int index_count){
+    auto trade_amount_callback_ptr = std::make_unique<TradeAmount>(type,index_count);
     CallBackObjPtr<TradeInfo> callback_obj_ptr = std::move(trade_amount_callback_ptr);
     return callback_obj_ptr;
 }
@@ -88,11 +88,11 @@ CallBackObjPtr<TradeInfo> CallBackObjFactory::create_trade_function_callback(con
         return create_candle_stick_callback(closeprices);
     }
     else if(name == "trade_amount_dollar"){
-        return create_trade_amount_callback(TradeAmount::ThresholdType::DOLLAR);
+        return create_trade_amount_callback(TradeAmount::ThresholdType::DOLLAR,id_count);
     }else if(name == "trade_amount_std"){
-        return create_trade_amount_callback(TradeAmount::ThresholdType::STD);
+        return create_trade_amount_callback(TradeAmount::ThresholdType::STD,id_count);
     }else if(name == "trade_amount_quantile"){
-        return create_trade_amount_callback(TradeAmount::ThresholdType::QUANTILE);
+        return create_trade_amount_callback(TradeAmount::ThresholdType::QUANTILE,id_count);
     }else if(name == "order_flow_min"){
         return create_order_flow_min_callback(OrderFlowMin::OrderType::NONE,id_count);
     }else if(name == "order_flow_min_big"){

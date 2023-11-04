@@ -128,7 +128,7 @@ void PeriodSignalGenerator<T, EX>::minimal_period_signal_generator(std::stop_tok
             /**
              * 9:15:xx + 10min to 9:25 min
             */
-            std::jthread collect_task_for_call_auction([this,t_now](){
+            std::thread collect_task_for_call_auction([this,t_now](){
                 this->collector->special_signal_handler(t_now,10*60*1000);
             });
             send_count++;
@@ -138,7 +138,7 @@ void PeriodSignalGenerator<T, EX>::minimal_period_signal_generator(std::stop_tok
             /**
              * 9:15:xx + 15min to 9:30
             */
-            std::jthread collect_task_for_market_open([this,t_now](){
+            std::thread collect_task_for_market_open([this,t_now](){
                 this->collector->special_signal_handler(t_now,15*60*1000);
             });
             send_count++;
