@@ -47,8 +47,19 @@ CallBackObjPtr<TradeInfo> CallBackObjFactory::create_candle_stick_callback(std::
 
 template<EXCHANGE EX>
 CallBackObjPtr<TradeInfo> CallBackObjFactory::create_trade_function_callback(const std::string& name) {
-    FeatureOption feature_option;
-    feature_option.init();
+    // FeatureOption feature_option;
+    // feature_option.init();
+    int id_count = [&](){
+        ClosePrice config_of_closeprice;
+        config_of_closeprice.init();
+        if constexpr (EX == EXCHANGE::SH) {
+            return config_of_closeprice.sh.size();
+        }else if constexpr (EX == EXCHANGE::SZ) {
+            return config_of_closeprice.sz.size();
+        }else{
+            throw std::runtime_error("sh_or_sz format error");
+        }
+    }();
     if(name == "debug_trade"){
         ClosePrice config_of_closeprice;
         config_of_closeprice.init();
@@ -76,47 +87,18 @@ CallBackObjPtr<TradeInfo> CallBackObjFactory::create_trade_function_callback(con
         }
         return create_candle_stick_callback(closeprices);
     }
-    else if(name == "trade_amount"){
-        /*no state need inherit, no state need keep, need select threshlod type*/
-        int select_index = feature_option.config["trade_amount"]["select"];
-        if(select_index == 0){
-            //dollar
-            return create_trade_amount_callback(TradeAmount::ThresholdType::DOLLAR);
-        }else if(select_index == 1){
-            //std
-            return create_trade_amount_callback(TradeAmount::ThresholdType::STD);
-        }else if(select_index == 2){
-            //quantile
-            return create_trade_amount_callback(TradeAmount::ThresholdType::QUANTILE);
-        }else{
-           throw std::runtime_error("trade_amount format error"); 
-        }
-    }
-    else if(name == "order_flow_min"){
-        int id_count = [&](){
-            ClosePrice config_of_closeprice;
-            config_of_closeprice.init();
-            if constexpr (EX == EXCHANGE::SH) {
-                return config_of_closeprice.sh.size();
-            }else if constexpr (EX == EXCHANGE::SZ) {
-                return config_of_closeprice.sz.size();
-            }else{
-                throw std::runtime_error("sh_or_sz format error");
-            }
-        }();
-        int select_index = feature_option.config["order_flow_min"]["select"];
-        if(select_index == 0){
-            //None
-            return create_order_flow_min_callback(OrderFlowMin::OrderType::NONE,id_count);
-        }else if(select_index == 1){
-            //BIG
-            return create_order_flow_min_callback(OrderFlowMin::OrderType::BIG,id_count);
-        }else if(select_index == 2){
-            //SMALL
-            return create_order_flow_min_callback(OrderFlowMin::OrderType::SMALL,id_count);
-        }else{
-            throw std::runtime_error("trade_amount format error"); 
-        }
+    else if(name == "trade_amount_dollar"){
+        return create_trade_amount_callback(TradeAmount::ThresholdType::DOLLAR);
+    }else if(name == "trade_amount_std"){
+        return create_trade_amount_callback(TradeAmount::ThresholdType::STD);
+    }else if(name == "trade_amount_quantile"){
+        return create_trade_amount_callback(TradeAmount::ThresholdType::QUANTILE);
+    }else if(name == "order_flow_min"){
+        return create_order_flow_min_callback(OrderFlowMin::OrderType::NONE,id_count);
+    }else if(name == "order_flow_min_big"){
+        return create_order_flow_min_callback(OrderFlowMin::OrderType::BIG,id_count);
+    }else if(name == "order_flow_min_small"){
+        return create_order_flow_min_callback(OrderFlowMin::OrderType::SMALL,id_count);
     }
     else{
         throw std::runtime_error("Invalid callback name");

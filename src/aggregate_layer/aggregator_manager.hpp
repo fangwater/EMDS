@@ -1,5 +1,6 @@
 #ifndef AGGREGATOR_MANAGER_HPP
 #define AGGREGATOR_MANAGER_HPP
+#include <chrono>
 #include "aggregator.hpp"
 class AggregatorManager{
 private:
@@ -140,7 +141,8 @@ int AggregatorManager::register_aggregator(int period, std::string aggregator_na
 }
 
 std::string AggregatorManager::format_tp_to_string(int64_t time_in_micros) {
-    absl::Time time_obj = absl::FromUnixMicros(time_in_micros);
+    //需要把时间再减去，都是pandas的问题
+    absl::Time time_obj = absl::FromUnixMicros(time_in_micros) - absl::Hours(8);
     const absl::TimeZone& cached_tz = absl::LocalTimeZone();
     int hours = std::stoi(absl::FormatTime("%H", time_obj, cached_tz));
     int minutes = std::stoi(absl::FormatTime("%M", time_obj, cached_tz));
@@ -171,28 +173,78 @@ int AggregatorManager::period_finish(int period, int64_t tp){
         if(iter->second > 2){
             LOG(WARNING) << "Consecutive first calls to period_finish without a second call!";
         }else{
-            DLOG(INFO) << "Correct!";
+            LOG(INFO) << fmt::format("Start publish for period_{} ......",period);
         }
         //第二次插入这个key, 正确
         finish_map.erase(iter);
         auto& aggregators = period_aggregators_map.at(period);
+        // int64_t publish_cost = 0;
+        // int64_t dump_cost = 0;
+        // for(int i = 0; i < aggregators->size(); i++){
+        //     auto& aggregator = aggregators->at(i);
+        //     aggregator->set_time_col(tp);
+
+        //     auto start_publish = std::chrono::system_clock::now();
+        //     aggregator->publish();
+        //     auto end_publish = std::chrono::system_clock::now();
+        //     publish_cost += std::chrono::duration_cast<std::chrono::milliseconds>(end_publish - start_publish).count();
+
+        //     if(need_dump_file){
+        //         /*path: dump_dir/function_name/period_i/duration*/
+        //         /* 2023_08_12/candle_stick/period_{}/09_31_03_000 */
+        //         std::string folder_dir = fmt::format("{}/{}/period_{}",dump_dir,aggregator->get_name(),period);
+        //         if(!std::filesystem::exists(folder_dir)){
+        //             std::filesystem::create_directories(folder_dir);
+        //         }
+        //         std::string path = fmt::format("{}/{}.parquet",folder_dir,format_tp_to_string(tp));
+        //         aggregator->dump(path);
+        //         // (void)std::async(std::launch::async, [&aggregator,dump_path = std::move(path)](){
+        //         //     aggregator->dump(dump_path);
+        //         // });
+        //         auto end_dump = std::chrono::system_clock::now();
+        //         dump_cost += std::chrono::duration_cast<std::chrono::milliseconds>(end_dump - end_publish).count();
+        //     }
+        // }
+        std::atomic<int64_t> max_publish_delay = 0;
+        std::atomic<int64_t> max_dump_delay = 0;
+        std::vector<std::jthread> workers;
+        auto start_publish = std::chrono::system_clock::now();
         for(int i = 0; i < aggregators->size(); i++){
-            auto& aggregator = aggregators->at(i);
-            aggregator->set_time_col(tp);
-            aggregator->publish();
-            if(need_dump_file){
-                /*path: dump_dir/function_name/period_i/duration*/
-                /* 2023_08_12/candle_stick/period_{}/09_31_03_000 */
-                std::string folder_dir = fmt::format("{}/{}/period_{}",dump_dir,aggregator->get_name(),period);
-                if(!std::filesystem::exists(folder_dir)){
-                    std::filesystem::create_directories(folder_dir);
+            workers.emplace_back([&, i](std::stop_token stoken) {
+                auto& aggregator = aggregators->at(i);
+                aggregator->set_time_col(tp);
+                aggregator->publish();
+                auto end_publish = std::chrono::system_clock::now();
+                int64_t current_publish_delay = std::chrono::duration_cast<std::chrono::milliseconds>(end_publish - start_publish).count();
+                int64_t prev_publish_delay = max_publish_delay.load(std::memory_order_relaxed);
+                while (current_publish_delay > prev_publish_delay &&
+                    !max_publish_delay.compare_exchange_strong(prev_publish_delay, current_publish_delay, std::memory_order_relaxed));
+
+                if(need_dump_file){
+                    /*path: dump_dir/function_name/period_i/duration*/
+                    /* 2023_08_12/candle_stick/period_{}/09_31_03_000 */
+                    std::string folder_dir = fmt::format("{}/{}/period_{}", dump_dir, aggregator->get_name(), period);
+                    if(!std::filesystem::exists(folder_dir)){
+                        std::filesystem::create_directories(folder_dir);
+                    }
+                    std::string path = fmt::format("{}/{}.parquet", folder_dir, format_tp_to_string(tp));
+                    aggregator->dump(path);
+                    auto end_dump = std::chrono::system_clock::now();
+                    int64_t current_dump_delay = std::chrono::duration_cast<std::chrono::milliseconds>(end_dump - end_publish).count();
+                    int64_t prev_dump_delay = max_dump_delay.load(std::memory_order_relaxed);
+                    while (current_dump_delay > prev_dump_delay &&
+                        !max_dump_delay.compare_exchange_strong(prev_dump_delay, current_dump_delay, std::memory_order_relaxed));
                 }
-                std::string path = fmt::format("{}/{}.parquet",folder_dir,format_tp_to_string(tp));
-                aggregator->dump(path);
-                // (void)std::async(std::launch::async, [&aggregator,dump_path = std::move(path)](){
-                //     aggregator->dump(dump_path);
-                // });
-            }
+            });
+        }
+        // Wait for all threads to complete
+        for(auto& worker : workers) {
+            worker.join();
+        }
+        LOG(INFO) << fmt::format("Finsh publish for {} features period_{}", aggregators->size(), period);
+
+        if (need_dump_file) {
+            LOG(INFO) << fmt::format("Max publish delay: {}ms, Max persistence delay: {}ms", max_publish_delay.load(), max_dump_delay.load());
         }
     }
 

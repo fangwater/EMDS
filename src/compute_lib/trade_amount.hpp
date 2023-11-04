@@ -19,11 +19,12 @@ public:
     };
 private:
     ThresholdType threshold_type;
+    std::vector<double> last_tradp;
 public:
-    explicit TradeAmount(TradeAmount::ThresholdType type):threshold_type(type){};
+    explicit TradeAmount(TradeAmount::ThresholdType type, int id_count):threshold_type(type),last_tradp(id_count){};
     virtual std::vector<double> calculate(const PackedInfoSp<TradeInfo>& tick_buffer_sp,int security_id_index) override;
 private:    
-    std::vector<double> calc_trade_amount(std::shared_ptr<std::vector<std::shared_ptr<TradeInfo>>> packed_ticker_sp){
+    std::vector<double> calc_trade_amount(std::shared_ptr<std::vector<std::shared_ptr<TradeInfo>>> packed_ticker_sp,int security_id_index){
         if(packed_ticker_sp->size()==0){
             return std::vector<double>(13,0);
         }
@@ -67,7 +68,8 @@ private:
         //aa['tradamt'] = aa['tradp']*aa['tradv']
         auto aa_tradamt = simd_impl::pairwise_mul(aa_tradv,aa_tradp);
         //aa['last_tradp'] = aa.groupby('securityid')['tradp'].transform('shift')
-        auto aa_last_tradp = shift(aa_tradp,1,std::numeric_limits<double>::quiet_NaN());
+        auto aa_last_tradp = shift(aa_tradp,1,last_tradp[security_id_index]);
+        last_tradp[security_id_index] = aa_tradp->back();
         //aa['logret'] = (np.log(aa['tradp']+1) - np.log(aa['last_tradp']+1)).replace([np.inf,-np.inf],np.nan)
         auto aa_logret = [&aa_tradv,&aa_tradp,&aa_last_tradp](){
             int size_of_tradp = aa_tradp->size();
@@ -344,6 +346,6 @@ private:
 };
 
 std::vector<double> TradeAmount::calculate(const PackedInfoSp<TradeInfo> &tick_buffer_sp, int security_id_index) {
-    return calc_trade_amount(tick_buffer_sp);
+    return calc_trade_amount(tick_buffer_sp,security_id_index);
 }
 #endif

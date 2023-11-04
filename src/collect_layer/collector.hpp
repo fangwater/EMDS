@@ -200,6 +200,13 @@ void ContractPeriodComputer<T,EX>::process_minimum_period_info(PackedInfoSp<T> m
                     .security_id = security_ids[i],
                     .results = std::move(callback_results)
             };
+            //
+            // if(period_res.security_id == std::array<char, 11>{'0', '0', '0', '0', '1', '8', '.', 'X', 'S', 'H', 'E'}){
+            //     printf("Get 000018.XSHE\n");
+            //     printf("%d\n",minimum_period_info->size());
+            //     if (std::isnan(period_res.results[0][0])) {
+            //         std::cout << "feature is NaN" << std::endl;}
+            // }
             aggregator->commit(std::move(period_res));
             //释放当前period的数据
             period_ctx.accumulated_infos[i]->clear();
@@ -225,7 +232,8 @@ public:
 public:
     ContractBufferMapCollector();
 public:
-    int signal_handler(absl::Time t);
+    int signal_handler(absl::Time tp);
+    int special_signal_handler(absl::Time tp, int64_t sleep_time); 
     void init();
     int bind_contract_buffer_map(std::shared_ptr<ContractBufferMap<T,EX>> _contract_buffer_map);
     int bind_contract_period_computer(std::shared_ptr<ContractPeriodComputer<T,EX>> _contract_period_computer);
@@ -292,7 +300,7 @@ void ContractBufferMapCollector<T,EX>::init() {
             if (!absl::ParseCivilTime(str_day, &today)) {
                 throw std::runtime_error("Fail to get today from system.json");
             }
-            absl::Duration continuous_trading_begin = absl::Hours(9) + absl::Minutes(30);
+            absl::Duration continuous_trading_begin = absl::Hours(9) + absl::Minutes(30) - absl::Milliseconds(1);
             absl::Time today_start = absl::FromCivil(today,sh_tz.tz);
             return today_start + continuous_trading_begin;
         }();
@@ -326,6 +334,20 @@ PackedInfoSp<T> ContractBufferMapCollector<T,EX>::collect_info_by_id(std::array<
     }
 }
 
+/**
+ * 休眠指定时间，并以指定时间进行收集
+*/
+template<typename T, EXCHANGE EX>
+int ContractBufferMapCollector<T,EX>::special_signal_handler(absl::Time tp, int64_t sleep_time) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time/scale_rate + latency));
+    tp += absl::Milliseconds(sleep_time);
+    absl::CivilMinute truncated_civil = absl::ToCivilMinute(tp,sh_tz.tz);
+    absl::Time truncated_time = absl::FromCivil(truncated_civil,sh_tz.tz);
+    LOG(INFO) << fmt::format("Collect at truncated_time {} for {}", absl_time_to_str(truncated_time),str_type_ex<T,EX>());
+    run_collect(truncated_time);
+    return 0;
+}
+
 template<typename T, EXCHANGE EX>
 int ContractBufferMapCollector<T,EX>::signal_handler(absl::Time tp) {
     std::lock_guard<std::mutex> sig_mtx(mtx);
@@ -334,8 +356,10 @@ int ContractBufferMapCollector<T,EX>::signal_handler(absl::Time tp) {
     std::this_thread::sleep_for(std::chrono::milliseconds(min_period/scale_rate + latency));
     //std::this_thread::sleep_for(std::chrono::milliseconds(latency));
     //TODO：修改为能兼容对齐取整模式
+    tp += absl::Milliseconds(min_period);
     absl::CivilMinute truncated_civil = absl::ToCivilMinute(tp,sh_tz.tz);
     absl::Time truncated_time = absl::FromCivil(truncated_civil,sh_tz.tz);
+    LOG(INFO) << fmt::format("Collect at truncated_time {} for {}", absl_time_to_str(truncated_time),str_type_ex<T,EX>());
     run_collect(truncated_time);
     return 0;
 }
@@ -350,21 +374,17 @@ int ContractBufferMapCollector<T,EX>::run_collect(absl::Time threshold_tp) {
         contract_period_computer->process_minimum_period_info(this_period_info,i,rec_count);
         });
     });
-    // int x = contract_period_computer->per_period_ctx.front().accumulated_infos.size();
-    // DLOG(INFO) << fmt::format("{} \n contract_size {}",str_type_ex<TradeInfo,EX>(),x);
-    // DLOG(INFO) << fmt::format("ids {}",security_ids.size());
     // for(int i = 0; i < security_ids.size(); i++){
     //     auto this_period_info = collect_info_by_id(security_ids[i], threshold_tp);
     //     if(this_period_info->size() != 0){
-    //         std::cout << fmt::format("{} index {} has ele {}",str_type_ex<TradeInfo,EX>(),i,this_period_info->size())<<std::endl;
+    //         if(this_period_info->size() == 1){
+    //             std::cout << i << std::endl;
+    //             exit(0);
+    //         }
     //         contract_period_computer->process_minimum_period_info(this_period_info,i,rec_count);
     //     }
-    //     // contract_period_computer->process_minimum_period_info(this_period_info,i,rec_count);
     // }
-    // tbb::parallel_for(size_t(0), security_ids.size(), [&](size_t i) {
-    //     auto this_period_info = collect_info_by_id(security_ids[i], threshold_tp);
-    //     contract_period_computer->process_minimum_period_info(this_period_info,i,rec_count);
-    // });
+
     // for(int i = 0; i < security_ids.size(); i++){
     //     auto this_period_info = collect_info_by_id(security_ids[i], threshold_tp);
     //     contract_period_computer->process_minimum_period_info(this_period_info,i,rec_count);

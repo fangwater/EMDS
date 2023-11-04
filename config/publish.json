@@ -12,12 +12,32 @@
         },
         {
             "open":true,
-            "name":"trade_amount",
-            "period":[1,3,5]
+            "name":"trade_amount_dollar",
+            "period":[1,5,15,30]
         },
         {
-            "open":false,
+            "open":true,
+            "name":"trade_amount_std",
+            "period":[1,5,15,30]
+        },
+        {
+            "open":true,
+            "name":"trade_amount_quantile",
+            "period":[1,5,15,30]
+        },
+        {
+            "open":true,
             "name":"order_flow_min",
+            "period":[1]
+        },
+        {
+            "open":true,
+            "name":"order_flow_min_big",
+            "period":[1,5,15]
+        },
+        {
+            "open":true,
+            "name":"order_flow_min_small",
             "period":[1,5,15]
         }
     ],

@@ -268,6 +268,7 @@ int MarketDataAggregator::commit(int row, std::vector<double>& feature_res){
             table.at<double>(row,i+2) = feature_res[i];
         }else{
             table.set_nan(row,i+2);
+            table.at<double>(row,i+2) = std::numeric_limits<double>::quiet_NaN();
         }
     }
     committed++;

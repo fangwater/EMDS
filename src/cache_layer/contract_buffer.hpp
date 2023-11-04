@@ -40,6 +40,7 @@ public:
         std::shared_ptr<T> ticker_info_sp_before = nullptr;
         while(!buffer_ptr->isEmpty()){
             //getting all tick_info_ptr of this SecurityID
+            //(,], 符合要求
             if( ( *(buffer_ptr->frontPtr()) )->TradTime <= time_threshold){
                 // only flush the ticker_info not in the same min of lastest ticker_info_sp
                 buffer_ptr->read(ticker_info_sp_before);
@@ -89,7 +90,7 @@ public:
         }else{
             //不应该要求跟踪全部股票，不存在的忽略即可
             //throw std::runtime_error("security_id is not included in the securiy_id_to_contract_buffer_map");
-            LOG(INFO) << "security_id is not included in the securiy_id_to_contract_buffer_map";
+            //LOG(INFO) << "security_id is not included in the securiy_id_to_contract_buffer_map";
             return false;
         }
     }

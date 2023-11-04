@@ -1,14 +1,14 @@
 {
     "trade":{
         "sh":{
-            "ip":"172.16.30.12",
-            "port":13002,
-            "channel":"new_sh_trade"
+            "ip":"172.16.30.36",
+            "port":10010,
+            "channel":""
         },
         "sz":{
-            "ip":"172.16.30.12",
-            "port":13002,
-            "channel":"sz_trade"            
+            "ip":"172.16.30.36",
+            "port":10011,
+            "channel":""            
         }
     },
     "depth":{

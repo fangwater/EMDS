@@ -54,4 +54,20 @@ std::function<bool(absl::Time&, absl::Time&, int64_t)> is_next_k_ms =
     return (passed >= absl::Milliseconds(k));
 };
 
+std::string duration_to_string(absl::Duration bias) {
+    // 提取时、分、秒、毫秒
+    int hours = absl::ToInt64Hours(bias);
+    bias -= absl::Hours(hours);
+    int minutes = absl::ToInt64Minutes(bias);
+    bias -= absl::Minutes(minutes);
+    int seconds = absl::ToInt64Seconds(bias);
+    bias -= absl::Seconds(seconds);
+    int milliseconds = absl::ToInt64Milliseconds(bias);
+    char buffer[20];  // 为输出缓冲区分配空间
+    snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d.%03d", hours, minutes, seconds, milliseconds);
+
+    return std::string(buffer);
+}
+
+
 #endif //TIME_UTILS_HPP

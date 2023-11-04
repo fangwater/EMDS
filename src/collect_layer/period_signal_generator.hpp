@@ -24,6 +24,7 @@ public:
     ZmqConfig zmq_cfg;
     std::shared_ptr<ContractBufferMapCollector<T,EX>> collector;
     LoggerPtr logger;
+    absl::Duration filter_boundary;
 private:
     zmq::context_t context;       // ZMQ context as a member
     zmq::socket_t subscriber;     // ZMQ subscriber as a member
@@ -50,7 +51,7 @@ public:
             if constexpr (EX == EXCHANGE::SH) {
                 return 4;
             } else if constexpr (EX == EXCHANGE::SZ) {
-                return 11;
+                return 10;
             }
         }
         //TODO 
@@ -101,6 +102,7 @@ PeriodSignalGenerator<T, EX>::PeriodSignalGenerator():context(1), subscriber(con
             zmq_cfg = sub_cfg.sz_order;
         }
     }
+    filter_boundary = absl::Hours(9) + absl::Minutes(30);
 }
 
 template<typename T,EXCHANGE EX>
@@ -108,6 +110,7 @@ void PeriodSignalGenerator<T, EX>::minimal_period_signal_generator(std::stop_tok
     zmq_bind();
     absl::CivilDay today = collector->today;
     int send_count = 0;
+    bool is_first_trade_message = true;
     while (true) {
         zmq::message_t message;
         auto res_state = subscriber.recv(message, zmq::recv_flags::none);
@@ -120,18 +123,45 @@ void PeriodSignalGenerator<T, EX>::minimal_period_signal_generator(std::stop_tok
         absl::Duration bias = convert_time_string_to_duration(x[time_part_index]);
         absl::Time today_start = absl::FromCivil(today,sh_tz.tz);
         absl::Time t_now = today_start + bias;
-        if( is_next_civil_min(collector->last_update_time, t_now) ){
-            std::jthread collect_task([this,t_now]() {
-                this->collector->signal_handler(t_now);
+        //特殊判断，如果是首次获得9点15分的Trade消息，则抛出两个信号
+        if(is_first_trade_message){
+            /**
+             * 9:15:xx + 10min to 9:25 min
+            */
+            std::jthread collect_task_for_call_auction([this,t_now](){
+                this->collector->special_signal_handler(t_now,10*60*1000);
             });
             send_count++;
-            DLOG(INFO) << fmt::format("From {} to {}", absl_time_to_str(collector->last_update_time),absl_time_to_str(t_now));
-            DLOG(INFO) << fmt::format("Period signal generator {} send {} times",str_type_ex<T,EX>(),send_count);
-            logger->info(fmt::format("From {} to {}", absl_time_to_str(collector->last_update_time),absl_time_to_str(t_now)));
-            logger->info(fmt::format("Period signal generator {} send {} times",str_type_ex<T,EX>(),send_count));
-            collect_task.detach();
+            LOG(INFO) << fmt::format("Special_signal generator for {} call_auction at 09:25:00",str_type_ex<T,EX>());
+            collect_task_for_call_auction.detach(); 
+            
+            /**
+             * 9:15:xx + 15min to 9:30
+            */
+            std::jthread collect_task_for_market_open([this,t_now](){
+                this->collector->special_signal_handler(t_now,15*60*1000);
+            });
+            send_count++;
+            LOG(INFO) << fmt::format("Special_signal generator for {} market_open at 09:30:00",str_type_ex<T,EX>());
+            collect_task_for_market_open.detach();
+
+            is_first_trade_message = false; 
         }
-        collector->last_update_time = ( collector->last_update_time < t_now ) ? t_now : collector->last_update_time;
+        //filter the trade message in (,9:30:00.000]
+        if( bias > filter_boundary ){
+            if(is_next_civil_min(collector->last_update_time, t_now)){
+                std::jthread collect_task([this,t_now]() {
+                    this->collector->signal_handler(t_now);
+                });
+                send_count++;
+                LOG(INFO) << fmt::format("From {} to {}", absl_time_to_str(collector->last_update_time),absl_time_to_str(t_now));
+                LOG(INFO) << fmt::format("Period signal generator {} send {} times",str_type_ex<T,EX>(),send_count);
+                logger->info(fmt::format("From {} to {}", absl_time_to_str(collector->last_update_time),absl_time_to_str(t_now)));
+                logger->info(fmt::format("Period signal generator {} send {} times",str_type_ex<T,EX>(),send_count));
+                collect_task.detach();
+            }
+            collector->last_update_time = ( collector->last_update_time < t_now ) ? t_now : collector->last_update_time;
+        }
         if(stoken.stop_requested()){
             DLOG(INFO) << fmt::format("Cancel period signal generator {}", str_type_ex<T,EX>());
             logger->info(fmt::format("Cancel period signal generator {}", str_type_ex<T,EX>()));

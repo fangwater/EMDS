@@ -41,6 +41,11 @@ std::unique_ptr<std::vector<T>> cast_to_double(std::unique_ptr<std::vector<T>>& 
 
 template<typename T>
 std::unique_ptr<std::vector<T>> shift(std::unique_ptr<std::vector<T>>& base_ptr, int32_t steps, T cval) {
+    if(base_ptr->size() == 1){
+        auto res_ptr = std::make_unique<std::vector<T>>();
+        res_ptr->push_back(cval);
+        return res_ptr;
+    }
     auto res_ptr = std::make_unique<std::vector<T>>(base_ptr->size());
     if(steps % base_ptr->size() == 0){
         std::memcpy(res_ptr->data(),base_ptr->data(),sizeof(T)*base_ptr->size());
@@ -341,6 +346,9 @@ namespace{
 
 namespace nan_ignore_impl{
     double mean(std::unique_ptr<std::vector<double>>& data_ptr) {
+        if(data_ptr->size() == 1){
+            return data_ptr->front();
+        }
         uint64_t no_nan_count = 0;
         double sum_of = 0;
         for(size_t i = 0; i < data_ptr->size(); i++){
@@ -353,6 +361,9 @@ namespace nan_ignore_impl{
     }
 
     double max(std::unique_ptr<std::vector<double>>& data_ptr){
+        if(data_ptr->size() == 1){
+            return data_ptr->front();
+        }
         double max_value = std::numeric_limits<double>::min();
         for(size_t i = 0; i < data_ptr->size(); i++){
             if(!std::isnan(data_ptr->at(i))){
@@ -365,6 +376,9 @@ namespace nan_ignore_impl{
     }
 
     double min(std::unique_ptr<std::vector<double>>& data_ptr){
+        if(data_ptr->size() == 1){
+            return data_ptr->front();
+        }
         double min_value = std::numeric_limits<double>::max();
         for(size_t i = 0; i < data_ptr->size(); i++){
             if(!std::isnan(data_ptr->at(i))){
@@ -463,6 +477,9 @@ namespace simd_impl{
         if (!input_ptr->size()) {
             throw std::invalid_argument("Input vector must not be empty.");
         }
+        if(input_ptr->size() == 1){
+            return input_ptr->front();
+        }
         using simd_type = xsimd::simd_type<T>;
         std::size_t simd_size = simd_type::size;
         simd_type min_val = input_ptr->at(0);
@@ -484,6 +501,9 @@ namespace simd_impl{
         if (!input_ptr->size()) {
             throw std::invalid_argument("Input vector must not be empty.");
         }
+        if(input_ptr->size() == 1){
+            return input_ptr->front();
+        }
         using simd_type = xsimd::simd_type<T>;
         std::size_t simd_size = simd_type::size;
         simd_type max_val = input_ptr->at(0);
@@ -502,6 +522,9 @@ namespace simd_impl{
 
     template<typename T>
     T sum(const std::unique_ptr<std::vector<T>>& input_ptr) {
+        if(input_ptr->size() == 1){
+            return input_ptr->front();
+        }
         if (!input_ptr->size()) {
             return static_cast<T>(0);
         }
@@ -715,8 +738,8 @@ namespace group{
         Result(size_t s){ group_to.resize(s);}
         std::unique_ptr<std::vector<T>> get_group_values(){
             auto res_ptr = std::make_unique<std::vector<T>>( groups_values.size() );
-            for(int i = 0; i < res_ptr->size(); i++){
-                res_ptr->at(i) = groups_values[ordered_index_to_pre[i]];
+            for(int i = 0; i < groups_values.size(); i++){
+                res_ptr->at(ordered_index_to_pre[i]) = groups_values[i];
             }
             return res_ptr;
         }
@@ -801,8 +824,9 @@ namespace group{
             }
             auto transformed_ptr = std::make_unique<std::vector<uint64_t>>(res.group_to.size());
             for(int i = 0; i < transformed_ptr->size(); i++){
-                transformed_ptr->at(i) = res_ptr->at(res.group_to[i]);
+                transformed_ptr->at(res.ordered_index_to_pre[i]) = res_ptr->at(i);
             }
+            //res_ptr->at(ordered_index_to_pre[i]) = groups_values[i];
             return std::move(transformed_ptr);
         }
 
@@ -814,7 +838,7 @@ namespace group{
             }
             auto transformed_ptr = std::make_unique<std::vector<double>>(res.group_to.size());
             for(int i = 0; i < transformed_ptr->size(); i++){
-                transformed_ptr->at(i) = res_ptr->at(res.group_to[i]);
+                transformed_ptr->at(res.ordered_index_to_pre[i]) = res_ptr->at(i);
             }
             return std::move(transformed_ptr);
         }
@@ -827,7 +851,7 @@ namespace group{
             }
             auto transformed_ptr = std::make_unique<std::vector<T2>>(res.group_to.size());
             for(int i = 0; i < transformed_ptr->size(); i++){
-                transformed_ptr->at(i) = res_ptr->at(res.group_to[i]);
+                transformed_ptr->at(res.ordered_index_to_pre[i]) = res_ptr->at(i);
             }
             return std::move(transformed_ptr);
         }
@@ -840,7 +864,7 @@ namespace group{
             }
             auto transformed_ptr = std::make_unique<std::vector<T2>>(res.group_to.size());
             for(int i = 0; i < transformed_ptr->size(); i++){
-                transformed_ptr->at(i) = res_ptr->at(res.group_to[i]);
+                transformed_ptr->at(res.ordered_index_to_pre[i]) = res_ptr->at(i);
             }
             return std::move(transformed_ptr);
         }
@@ -853,7 +877,7 @@ namespace group{
             }
             auto transformed_ptr = std::make_unique<std::vector<T2>>(res.group_to.size());
             for(int i = 0; i < transformed_ptr->size(); i++){
-                transformed_ptr->at(i) = res_ptr->at(res.group_to[i]);
+                transformed_ptr->at(res.ordered_index_to_pre[i]) = res_ptr->at(i);
             }
             return std::move(transformed_ptr);
         }
@@ -866,7 +890,7 @@ namespace group{
             }
             auto transformed_ptr = std::make_unique<std::vector<T2>>(res.group_to.size());
             for(int i = 0; i < transformed_ptr->size(); i++){
-                transformed_ptr->at(i) = res_ptr->at(res.group_to[i]);
+                transformed_ptr->at(res.ordered_index_to_pre[i]) = res_ptr->at(i);
             }
             return std::move(transformed_ptr);
         }
@@ -879,7 +903,7 @@ namespace group{
             }
             auto transformed_ptr = std::make_unique<std::vector<T2>>(res.group_to.size());
             for(int i = 0; i < transformed_ptr->size(); i++){
-                transformed_ptr->at(i) = res_ptr->at(res.group_to[i]);
+                transformed_ptr->at(res.ordered_index_to_pre[i]) = res_ptr->at(i);
             }
             return std::move(transformed_ptr);
         }
@@ -893,7 +917,7 @@ namespace group{
             }
             auto transformed_ptr = std::make_unique<std::vector<double>>(res.group_to.size());
             for(int i = 0; i < transformed_ptr->size(); i++){
-                transformed_ptr->at(i) = res_ptr->at(res.group_to[i]);
+                transformed_ptr->at(res.ordered_index_to_pre[i]) = res_ptr->at(i);
             }
             return std::move(transformed_ptr);
         }
@@ -904,7 +928,7 @@ namespace group{
         std::unique_ptr<std::vector<uint64_t>> count(Result<T>& res){
             auto res_ptr = std::make_unique<std::vector<uint64_t>>(res.index_count.size());
             for(int i = 0; i < res_ptr->size(); i++){
-                res_ptr->at(i) = static_cast<uint64_t>(res.index_count[res.ordered_index_to_pre[i]]);
+                res_ptr->at(res.ordered_index_to_pre[i]) = static_cast<uint64_t>(res.index_count[i]);
             }
             return std::move(res_ptr);
         }
@@ -913,7 +937,7 @@ namespace group{
         std::unique_ptr<std::vector<double>> count_as_double(Result<T>& res){
             auto res_ptr = std::make_unique<std::vector<double>>(res.index_count.size());
             for(int i = 0; i < res_ptr->size(); i++){
-                res_ptr->at(i) = static_cast<double>(res.index_count[res.ordered_index_to_pre[i]]);
+                res_ptr->at(res.ordered_index_to_pre[i]) = static_cast<double>(res.index_count[i]);
             }
             return std::move(res_ptr);
         }
@@ -922,7 +946,7 @@ namespace group{
         std::unique_ptr<std::vector<T2>> sum(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
             auto res_ptr = std::make_unique<std::vector<T2>>(partitioned_data.size());
             for(int i = 0; i < partitioned_data.size(); i++){
-                res_ptr->at(i) = simd_impl::sum(partitioned_data[res.ordered_index_to_pre[i]]);
+                res_ptr->at(res.ordered_index_to_pre[i]) = simd_impl::sum(partitioned_data[i]);
             }
             return std::move(res_ptr);
         }
@@ -931,7 +955,7 @@ namespace group{
         std::unique_ptr<std::vector<T2>> max(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
             auto res_ptr = std::make_unique<std::vector<T2>>(partitioned_data.size());
             for(int i = 0; i < partitioned_data.size(); i++){
-                res_ptr->at(i) = simd_impl::max(partitioned_data[res.ordered_index_to_pre[i]]);
+                res_ptr->at(res.ordered_index_to_pre[i]) = simd_impl::max(partitioned_data[i]);
             }
             return std::move(res_ptr);
         }
@@ -940,7 +964,7 @@ namespace group{
         std::unique_ptr<std::vector<T2>> min(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
             auto res_ptr = std::make_unique<std::vector<T2>>(partitioned_data.size());
             for(int i = 0; i < partitioned_data.size(); i++){
-                res_ptr->at(i) = simd_impl::min(partitioned_data[res.ordered_index_to_pre[i]]);
+                res_ptr->at(res.ordered_index_to_pre[i]) = simd_impl::min(partitioned_data[i]);
             }
             return std::move(res_ptr);
         }
@@ -949,7 +973,7 @@ namespace group{
         std::unique_ptr<std::vector<T2>> first(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
             auto res_ptr = std::make_unique<std::vector<T2>>(partitioned_data.size());
             for(int i = 0; i < partitioned_data.size(); i++){
-                res_ptr->at(i) = partitioned_data[res.ordered_index_to_pre[i]]->front();
+                res_ptr->at(res.ordered_index_to_pre[i]) = partitioned_data[i]->front();
             }
             return std::move(res_ptr);
         }
@@ -958,7 +982,7 @@ namespace group{
         std::unique_ptr<std::vector<T2>> last(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
             auto res_ptr = std::make_unique<std::vector<T2>>(partitioned_data.size());
             for(int i = 0; i < partitioned_data.size(); i++){
-                res_ptr->at(i) = partitioned_data[res.ordered_index_to_pre[i]]->back();
+                res_ptr->at(res.ordered_index_to_pre[i]) = partitioned_data[i]->back();
             }
             return std::move(res_ptr);
         }
@@ -968,7 +992,7 @@ namespace group{
         std::unique_ptr<std::vector<double>> mean(Result<T1>& res, std::vector<std::unique_ptr<std::vector<T2>>>& partitioned_data){
             auto res_ptr = std::make_unique<std::vector<double>>(partitioned_data.size());
             for(int i = 0; i < partitioned_data.size(); i++){
-                res_ptr->at(i) = simd_impl::mean<T2>(partitioned_data[res.ordered_index_to_pre[i]]);
+                res_ptr->at(res.ordered_index_to_pre[i]) = simd_impl::mean<T2>(partitioned_data[i]);
             }
             return std::move(res_ptr);
         }

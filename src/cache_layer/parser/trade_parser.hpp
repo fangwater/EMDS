@@ -3,10 +3,7 @@
 #include "parser.hpp"
 class SZTradeInfoParser : public Parser<TradeInfo,EXCHANGE::SZ>{
 public:
-    absl::Duration filter_boundary;
-    explicit SZTradeInfoParser(const std::shared_ptr<InfoCache<TradeInfo,EXCHANGE::SZ>>& ptr ):Parser<TradeInfo,EXCHANGE::SZ>(ptr){
-
-                                                                                                 };
+    explicit SZTradeInfoParser(const std::shared_ptr<InfoCache<TradeInfo,EXCHANGE::SZ>>& ptr):Parser<TradeInfo,EXCHANGE::SZ>(ptr){};
 public:
     void MessageProcess(std::string_view line) override{
         std::vector<std::string_view> x = absl::StrSplit(line, ",");
@@ -14,10 +11,7 @@ public:
         int ExecType;
         CHECK_RETURN_VALUE(absl::SimpleAtoi(x[9], &ExecType),"Failed to convert ExecType");
         if(ExecType == 70){
-            absl::Duration bias = convert_time_string_to_duration(x[11]);
-            if(bias < filter_boundary){
-                return;
-            }
+            absl::Duration bias = convert_time_string_to_duration(x[10]);
             std::shared_ptr<TradeInfo> ticker_info_sp = std::make_shared<TradeInfo>();
             ticker_info_sp->SecurityID = stringViewToArray<11>(x[5]);
             set_trade_suffix<TradeInfo,EXCHANGE::SZ>(ticker_info_sp->SecurityID);
@@ -44,9 +38,6 @@ public:
         std::vector<std::string_view> x = absl::StrSplit(line,",");
         if(x[10] != "N"){
             absl::Duration bias = convert_time_string_to_duration(x[4]);
-            if(bias < filter_boundary){
-                return;
-            }
             std::shared_ptr<TradeInfo> TickInfo_sp = std::make_shared<TradeInfo>();
             // CHECK_RETURN_VALUE(absl::SimpleAtoi(x[3], &ticker_info_sp->SecurityID),"Failed to convert SecurityID");
             TickInfo_sp->SecurityID = stringViewToArray<11>(x[3]);

@@ -102,6 +102,9 @@ public:
             Dcjbs_orderDecay, S_decaySlope, Scjbs_decaySlope, D_decaySlope, Dcjbs_decaySlope
         };
     }
+    std::vector<double> empty_vector() const {
+        return std::vector<double>(to_vector().size(),std::numeric_limits<double>::quiet_NaN());
+    }
     void print() const {
         std::vector<double> res = to_vector();
         std::vector<const char*> names = {
@@ -179,7 +182,7 @@ std::vector<double> OrderFlowMin::calc_order_flow_min(std::shared_ptr<std::vecto
     auto aa_B_buyno = std::make_unique<std::vector<int64_t>>();
     auto aa_B_sellno = std::make_unique<std::vector<int64_t>>();
     if(packed_ticker_sp->size() == 0){
-        return ans.to_vector();
+        return ans.empty_vector();
     }
     for(int i = 0; i < packed_ticker_sp->size(); i++){
         std::shared_ptr<TradeInfo> ticker_sp = packed_ticker_sp->at(i);
@@ -201,13 +204,15 @@ std::vector<double> OrderFlowMin::calc_order_flow_min(std::shared_ptr<std::vecto
         }
     }
     if(aa_tradp->empty()){
-        return ans.to_vector();
+        return ans.empty_vector();
     }
+    // fmt::print("aa_tradp size :{}, aa_B_tradp: {}, aa_S_tradp {}\n",aa_tradp->size(),aa_B_tradp->size(),aa_S_tradp->size());
     // DataFrame aa;
     // DataFrame aa_B, aa_S;
     // aa['tradamt'] = aa['tradv'] * aa['tradp']
     auto aa_tradamt = simd_impl::pairwise_mul(aa_tradv,aa_tradp);
-    
+    // fmt::print("Before aa_S_tradv->size(): {}\n",aa_S_tradv->size());
+    // fmt::print("Before aa_B_tradv->size(): {}\n",aa_B_tradv->size());
     if(order_type != OrderType::NONE){
         // aa_B['tradamt_sum'] = aa_B.groupby('buyno')['tradamt'].transform('sum')
         // aa_S['tradamt_sum'] = aa_S.groupby('sellno')['tradamt'].transform('sum')
@@ -258,7 +263,9 @@ std::vector<double> OrderFlowMin::calc_order_flow_min(std::shared_ptr<std::vecto
             return std::make_tuple(std::move(tradv_ptr), std::move(tradp_ptr));
         }();
     }
-
+    if(aa_B_tradv->size() == 0 || aa_S_tradv->size() == 0){
+        return ans.empty_vector();
+    }
     // orderFlow_S = aa_S.groupby('tradp')['tradv'].sum().to_frame()
     // orderFlow_S.columns = ['Sv']
     // orderFlow_S['Scjbs'] = aa_S.groupby('tradp')['tradv'].count()
@@ -281,7 +288,6 @@ std::vector<double> OrderFlowMin::calc_order_flow_min(std::shared_ptr<std::vecto
         auto price = res.get_group_values();
         return std::make_tuple(std::move(price), std::move(sum_ptr), std::move(count_ptr));
     }();
-
     auto [tradp, mapping_1_ptr, mapping_2_ptr] = concat::horizontal(flow_S_price,flow_B_price);
     Sv = concat::apply<double>(mapping_1_ptr, tradp->size(), Sv ,"zero");
     Bv = concat::apply<double>(mapping_2_ptr, tradp->size(), Bv ,"zero");
@@ -308,6 +314,7 @@ std::vector<double> OrderFlowMin::calc_order_flow_min(std::shared_ptr<std::vecto
     ans.CumCjbs = accumlate_value.Cjbs;
     accumlate_value.Tradamt += ans.tradamt;
     ans.CumTradamt = accumlate_value.Tradamt;
+    /*bv && sv size = 0*/
     auto Delta = simd_impl::pairwise_sub(Bv, Sv);
     auto cjbsDelta = simd_impl::pairwise_sub(Bcjbs, Scjbs);
     auto DeltaStrength  = simd_impl::pairwise_div(Delta, tradv);
@@ -320,7 +327,7 @@ std::vector<double> OrderFlowMin::calc_order_flow_min(std::shared_ptr<std::vecto
     ans.cjbsMaxDeltaStrength = simd_impl::max(cjbsDeltaStrength);
     ans.MinDeltaStrength = simd_impl::min(DeltaStrength);
     ans.cjbsMinDeltaStrength = simd_impl::min(cjbsDeltaStrength);
-
+    
     std::tie(ans.DeltaStrength_MinMaxRatio, ans.cjbsDeltaStrength_MinMaxRatio) = [&](){
         if(simd_impl::min(cjbsDelta) != 0){
             return std::make_tuple(simd_impl::max(Delta)/simd_impl::min(Delta),simd_impl::max(cjbsDelta)/simd_impl::min(cjbsDelta));
@@ -385,6 +392,8 @@ std::vector<double> OrderFlowMin::calc_order_flow_min(std::shared_ptr<std::vecto
         });
         return result;
     }();
+    
+
 
     // orderFlow['Dcjbs_equilibrium'] = (orderFlow['Bcjbs']> 3*shift(orderFlow['Scjbs'], 1, cval=np.NaN)).replace([True,False],[1,0])
     auto Dcjbs_equilibrium = [&](){
@@ -587,16 +596,17 @@ std::vector<double> OrderFlowMin::calc_order_flow_min(std::shared_ptr<std::vecto
     
     // res['S_orderDecay'] = (orderFlow.groupby('datetime')['Sv'].first()/orderFlow.groupby('datetime')['Sv'].nth(2)).replace([np.inf,-np.inf],np.nan)
     // res['Scjbs_orderDecay'] = (orderFlow.groupby('datetime')['Scjbs'].first()/orderFlow.groupby('datetime')['Scjbs'].nth(2)).replace([np.inf,-np.inf],np.nan)
-    if(Sv->size() < 3){
+    if(Sv->size() < 2){
         ans.S_orderDecay = std::numeric_limits<double>::quiet_NaN();
     }else{
-        ans.S_orderDecay = division_no_inf(Sv->front(), Sv->at(2));
+        ans.S_orderDecay = division_no_inf(Sv->front(), Sv->at(1));
     }
-    if(Scjbs->size() < 3){
+    if(Scjbs->size() < 2){
         ans.Scjbs_orderDecay = std::numeric_limits<double>::quiet_NaN();
     }else{
-        ans.Scjbs_orderDecay = division_no_inf(Scjbs->front(), Scjbs->at(2));
+        ans.Scjbs_orderDecay = division_no_inf(Scjbs->front(), Scjbs->at(1));
     }
+
     // res['D_orderDecay'] = (orderFlow['Bv'].last()/orderFlow['Bv'].apply(lambda x: x.iloc[-2] if len(x)>1 else np.nan)).replace([np.inf,-np.inf],np.nan)
     // res['Dcjbs_orderDecay'] = (orderFlow.groupby('datetime')['Bcjbs'].last()/orderFlow.groupby('datetime')['Bcjbs'].apply(lambda x: x.iloc[-2] if len(x)>1 else np.nan)).replace([np.inf,-np.inf],np.nan)
     ans.D_orderDecay = [&](){
@@ -648,6 +658,7 @@ std::vector<double> OrderFlowMin::calc_order_flow_min(std::shared_ptr<std::vecto
         double y = simd_impl::std(base_ptr, simd_impl::mean(base_ptr));
         return division_no_inf(x,y);
     }();
+
     return ans.to_vector();
 }
 #endif
